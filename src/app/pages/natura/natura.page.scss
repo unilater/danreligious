@@ -1,0 +1,109 @@
+:host {
+  /* palette pergamena + accenti “monastici” con buon contrasto */
+  --parchment: #faf6e9;
+  --parchment-line: #dcd2bc;
+  --vintage-ink: #2b241f;        /* + scuro per contrasto */
+  --muted-ink: #5a4b43;
+
+  --monk-sage: #3c6a4a;          /* verde salvia (orto)         */
+  --monk-ocher: #8f6a23;         /* ocra (giardino/terra)       */
+  --monk-lake: #3d5f73;          /* blu-lago (acqua/piante)     */
+  --monk-wine: #6f2f27;          /* vino (cucina)               */
+  --monk-moon: #5b53a6;          /* viola luna                  */
+}
+
+.parchment-header {
+  --background: var(--parchment);
+  --color: var(--vintage-ink);
+  border-bottom: 1px solid var(--parchment-line);
+}
+
+.parchment-body {
+  --background: var(--parchment);
+  color: var(--vintage-ink);
+}
+
+/* titolo */
+.vintage-title {
+  font-family: "IM Fell English SC", "Cardo", serif;
+  letter-spacing: .02em;
+  ion-icon { margin-right: .45rem; color: var(--monk-ocher); }
+}
+
+/* hero / chip luna */
+.hero { text-align: center; padding: 16px 12px 6px; }
+.hero-date { font-weight: 700; color: var(--muted-ink); margin-bottom: 8px; }
+
+.chip-liturgical {
+  --background: #efe7d1;
+  --color: var(--vintage-ink);
+  border: 1px solid var(--parchment-line);
+  box-shadow: 0 1px 0 rgba(0,0,0,.05);
+}
+.chip-liturgical ion-icon { color: var(--monk-moon); }
+
+/* card vintage */
+ion-card.card-vintage,
+ion-card {
+  background: linear-gradient(180deg, #fffdf7 0%, var(--parchment) 100%);
+  border: 1px solid var(--parchment-line);
+  border-radius: 14px;
+  box-shadow: 0 2px 0 rgba(0,0,0,.06), 0 10px 20px rgba(0,0,0,.04);
+  overflow: hidden;
+}
+
+ion-card-title.section-title {
+  font-family: "IM Fell English SC", "Cardo", serif;
+  display: inline-flex; align-items: center; gap: .5rem;
+  ion-icon { color: var(--monk-ocher); }
+  &::after {
+    content: ""; flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--parchment-line), transparent);
+    margin-left: .6rem; opacity: .85;
+  }
+}
+
+/* elenco “opere del giorno” */
+.list-plain { --ion-item-background: transparent; }
+.list-plain ion-item {
+  border: 1px solid var(--parchment-line);
+  border-radius: 12px;
+  margin: 8px 0;
+  --padding-start: 10px;
+  --padding-end: 10px;
+}
+.label-head { font-weight: 700; color: var(--vintage-ink); }
+.label-sub  { opacity: .95; color: var(--muted-ink); }
+
+/* icone a tema (senza dipendere dall’ordine) */
+ion-item ion-icon[name="nutrition-outline"]   { color: var(--monk-sage); }   /* Orto   */
+ion-item ion-icon[name="trail-sign-outline"]  { color: var(--monk-ocher); }  /* Giardino */
+ion-item ion-icon[name="water-outline"]       { color: var(--monk-lake); }   /* Piante  */
+ion-item ion-icon[name="restaurant-outline"]  { color: var(--monk-wine); }   /* Cucina  */
+ion-item ion-icon[name="sparkles-outline"]    { color: #7a6a3e; }            /* Consiglio */
+ion-item ion-icon[name="moon-outline"]        { color: var(--monk-moon); }   /* Fase lunare */
+
+/* testo lungo – leggibilità migliorata */
+.prose {
+  /* leggero aumento, responsivo ma contenuto */
+  font-size: clamp(1.02rem, 0.98rem + 0.25vw, 1.14rem);
+  line-height: 1.72;
+  color: var(--vintage-ink);
+  max-width: 70ch;
+  margin: 0 auto;               /* centrato nella card */
+  letter-spacing: .005em;
+}
+.prose p { margin: .75rem 0; }
+.prose h2, .prose h3 {
+  font-family: "IM Fell English SC", "Cardo", serif;
+  letter-spacing: .02em;
+  margin: 1.1rem 0 .4rem;
+}
+.prose em { color: var(--muted-ink); }
+.prose strong { color: var(--vintage-ink); }
+
+/* stato */
+.state { display: grid; place-items: center; padding: 28px; text-align: center; }
+ion-note[color="danger"] {
+  background: #fff2ef; border: 1px solid #efc4bb; padding: 6px 10px; border-radius: 8px;
+}

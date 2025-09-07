@@ -20,22 +20,35 @@ export interface Liturgia {
 }
 
 export interface Santo {
+  id: number;
   titolo: string;
-  sottotitolo?: string | null;
-  snippet?: string | null;
-  emoji?: string | null;
-  corpo?: string | null;
+  sottotitolo?: string;
+  emoji?: string;
+  snippet?: string;
+  corpo?: string;
+  patronato?: string;
 }
 
+// src/app/models/almanacco.models.ts
 export interface Natura {
+  date: string;
+  orto?: string | null;
+  giardino?: string | null;
+  piante?: string | null;
+  cucina?: string | null;
+  consiglio?: string | null;
+  fase_lunare?: string | null;   // come arriva dal DB
+  lunaEmoji?: string | null;     // calcolato (opzionale)
+  lunaFase?: string | null;      // alias comodo per fase_lunare
   alba?: string | null;
   tramonto?: string | null;
-  luna_fase?: string | null;
-  luna_emoji?: string | null;
-  lavori?: string | null;
-  orto?: string | null;
-  stagione?: string | null;
+  testo?: string | null;         // SOLO per la pagina dettaglio
 }
+
+
+
+
 
 export interface Proverbio { testo: string; }
 export interface Onomastico { nome: string; }
+

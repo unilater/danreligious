@@ -1,13 +1,60 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>dettagliosanto</ion-title>
+<ion-header class="parchment-header">
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="vintage-title">
+      <ion-icon name="ribbon-outline"></ion-icon>
+      Santo del Giorno
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">dettagliosanto</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="parchment-body">
+
+  <!-- Contenuto -->
+  <ng-container *ngIf="!loading && !error && santo as s; else stateTpl">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-emoji" *ngIf="s.emoji">{{ s.emoji }}</div>
+      <h1 class="hero-title">{{ s.titolo }}</h1>
+      <div class="hero-sub" *ngIf="s.sottotitolo">{{ s.sottotitolo }}</div>
+
+      <div class="hero-tags" *ngIf="s.patronato">
+        <span class="pill patrono">Patrono: {{ s.patronato }}</span>
+      </div>
+
+      <div class="hero-date">{{ date }}</div>
+    </section>
+
+    <!-- TESTO / AGIOGRAFIA -->
+    <ion-card class="card-vintage">
+      <ion-card-content>
+        <div class="prose" *ngIf="s.corpo; else snippetTpl" [innerHTML]="s.corpo"></div>
+        <ng-template #snippetTpl>
+          <p class="prose" *ngIf="s.snippet">{{ s.snippet }}</p>
+          <p class="prose" *ngIf="!s.snippet">Nessun testo disponibile.</p>
+        </ng-template>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- AZIONI -->
+    <div class="buttons">
+      <ion-button fill="clear" routerLink="/tabs/tab1">
+        <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+        Torna all’Almanacco
+      </ion-button>
+    </div>
+
+  </ng-container>
+
+  <!-- STATI -->
+  <ng-template #stateTpl>
+    <div class="state">
+      <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+      <ion-note color="danger" *ngIf="error">{{ error }}</ion-note>
+    </div>
+  </ng-template>
+
 </ion-content>
