@@ -12,7 +12,14 @@ const routes: Routes = [
     loadComponent: () => import('./pages/messa/messa.page').then(m => m.MessaPage)
   },
   { path: '', redirectTo: '/tabs/tab1', pathMatch: 'full' },
-  { path: '**', redirectTo: '/tabs/tab1' }
+  { path: '**', redirectTo: '/tabs/tab1' },
+
+{
+  path: 'santo/:date',
+  loadComponent: () => import('./pages/dettagliosanto/dettagliosanto.page').then(m => m.DettagliosantoPage)
+}
+
+
 ];
 
 @NgModule({

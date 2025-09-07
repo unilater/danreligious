@@ -34,4 +34,63 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
+
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+:root {
+  /* palette tenue */
+  --vintage-ink: #2e2b29;
+  --parchment: #f7f1e3;
+  --parchment-2: #efe3c7;
+  --parchment-line: #d9c8a8;
+
+  /* accenti */
+  --accent-1: #8c6b4f;
+  --accent-2: #a27b5c;
+
+  /* liturgical helpers (se ti servono per classi custom) */
+  --lit-green: #3f8f4e;
+  --lit-red: #c0392b;
+  --lit-purple: #6f3b82;
+  --lit-white: #bbb6a8;
+  --lit-rose: #c96a8a;
+  --lit-black: #2b2b2b;
+  --lit-gold: #b8860b;
+}
+
+/* font & testo globali */
+html, body, ion-app, ion-content {
+  color: var(--vintage-ink);
+  font-family: "Cardo", serif;
+}
+
+.vintage-title, ion-title {
+  font-family: "IM Fell English SC", "Cardo", serif;
+  letter-spacing: .02em;
+}
+
+/* header pergamena (usa classe 'parchment-header' se vuoi) */
+.parchment-header {
+  --background: linear-gradient(180deg, var(--parchment) 0%, #f3ead4 100%);
+  border-bottom: 1px solid var(--parchment-line);
+}
+
+/* corpo pergamena (usa classe 'parchment-body' su ion-content se vuoi) */
+.parchment-body {
+  --background: radial-gradient(80% 120% at 50% 0%, #fff8ea 0%, var(--parchment) 70%) fixed;
+  background-image:
+    radial-gradient(80% 120% at 50% 0%, #fff8ea 0%, var(--parchment) 70%),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.02), rgba(0,0,0,.02) 1px, transparent 1px, transparent 4px);
+}
+
+/* centrature utili */
+.center-spinner { display: inline-block; margin: 16px auto; }
+.center-note { display: inline-block; margin-top: 10px; }
+
+/* micro-decorazioni orizzontali */
+.hr-vintage {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--parchment-line), transparent);
+  margin: 12px 0;
+}
+

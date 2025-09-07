@@ -1,100 +1,93 @@
-/* Optional: importa un font “antico” (se hai rete) */
-// @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap');
-
-:host {
-  --paper: #f6f1e1;
-  --ink: #3a2d20;
-  --ink-soft: #6b5642;
-  --accent: #8a5a44;
-}
-
-.parchment-header {
-  background: var(--paper);
-  border-bottom: 2px solid var(--ink);
-}
-
-.vintage-title {
-  font-family: "IM Fell English", "Goudy Old Style", Garamond, Georgia, serif;
-  letter-spacing: .5px;
-  text-transform: uppercase;
-  color: var(--ink);
-  display: flex;
-  gap: .5rem;
-  align-items: center;
-}
-
-.parchment-body {
-  --background: none;
-  background:
-    radial-gradient(ellipse at top left, rgba(255,255,255,.8), rgba(255,255,255,0)) 0 0/60% 60%,
-    radial-gradient(ellipse at bottom right, rgba(255,255,255,.6), rgba(255,255,255,0)) 100% 100%/60% 60%,
-    linear-gradient(#efe8d6, #f6f1e1);
-  color: var(--ink);
-}
-
-.almanac-frame {
-  margin: 16px;
-  padding-bottom: 16px;
-}
-
-.card-vintage {
-  background: #fffdf5;
-  border: 2px solid var(--ink);
+ion-card.card-vintage,
+ion-card {
+  background: linear-gradient(180deg, #fffdf7, var(--parchment));
+  border: 1px solid var(--parchment-line);
   border-radius: 14px;
-  box-shadow: 0 6px 0 #d9cdb6, inset 0 0 30px rgba(138,90,68,.08);
-  margin: 14px 0;
+  box-shadow: 0 2px 0 rgba(0,0,0,.06), 0 10px 20px rgba(0,0,0,.04);
+  overflow: hidden;
 }
 
-.section-title {
-  font-family: "IM Fell English", "Goudy Old Style", Garamond, Georgia, serif;
-  color: var(--ink);
-  display: flex;
-  align-items: center;
-  gap: .5rem;
+ion-card-header {
+  position: relative;
+  padding-bottom: 10px;
+
+  ion-card-title {
+    font-family: "IM Fell English SC", "Cardo", serif;
+    font-size: 1.2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+
+    &::after {
+      content: "";
+      flex: 1 1 auto;
+      height: 1px;
+      background: linear-gradient(90deg, var(--parchment-line), transparent);
+      margin-left: .6rem;
+      opacity: .8;
+    }
+  }
 }
 
-.chip-liturgical {
-  border: 1px dashed var(--ink-soft);
-  margin-top: 8px;
+/* chip liturgico */
+ion-chip.chip-liturgical {
+  --background: #f0ead9;
+  --color: var(--vintage-ink);
+  border: 1px solid var(--parchment-line);
+  box-shadow: 0 1px 0 rgba(0,0,0,.06);
 }
 
-.liturgical-meta .row { display: flex; gap: .5rem; margin-bottom: 6px; }
-.liturgical-meta .label { font-weight: 600; color: var(--ink); }
-.liturgical-meta .value { color: var(--ink-soft); }
+/* lista neutra (se la usi) */
+.list-plain {
+  --ion-item-background: transparent;
+  --ion-item-border-color: var(--parchment-line);
+}
 
-.list-plain ion-item { --background: transparent; }
+/* item elenco letture */
+ion-item.reading {
+  --background: transparent;
+  border-bottom: 1px dashed var(--parchment-line);
 
-.lettura-tipo { font-weight: 700; }
-.lettura-ref { font-style: italic; color: var(--ink-soft); }
-.lettura-snippet { opacity: .9; margin-top: 2px; }
+  ion-icon {
+    opacity: .7;
+  }
+  ion-label div:first-child { /* tipo */
+    letter-spacing: .02em;
+  }
+  ion-label div:nth-child(2) { /* riferimento */
+    opacity: .75;
+  }
+}
 
-.btn-row { display: flex; justify-content: flex-end; margin-top: 10px; }
+/* Collegamenti rapidi - stile "pulsantoni morbidi" */
+ion-card .quick-links,
+ion-card ion-list {
+  background: transparent;
+}
 
-.santo-titolo { font-weight: 700; font-size: 1.05rem; }
-.santo-sub { color: var(--ink-soft); margin-top: 2px; }
-.santo-snippet { margin-top: 6px; }
-
-.mini-stats { text-align: center; }
-.mini-item { display: grid; gap: 2px; }
-.mini-item span { font-size: .8rem; color: var(--ink-soft); }
-.mini-item strong { font-size: 1rem; }
-
-.prose { line-height: 1.45; }
-
-.quick-links ion-button {
-  height: 80px;
-  flex-direction: column;
-  border: 1px solid var(--ink);
+ion-item[button] {
+  --background: transparent;
+  border: 1px solid var(--parchment-line);
   border-radius: 12px;
-  background: #fffaf0;
+  margin: 6px 0;
+  transition: transform .08s ease, box-shadow .12s ease;
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: inset 0 2px 6px rgba(0,0,0,.06);
+  }
 }
 
-.onomastici, .proverbio {
-  display: flex; align-items: center; gap: .5rem; margin: 6px 0;
+/* icone più "da stampa" */
+ion-icon {
+  font-size: 1.1rem;
+  opacity: .9;
 }
 
-.center-spinner, .center-note {
-  display: block;
-  margin: 40px auto;
-  text-align: center;
+/* nota in evidenza (errori ecc) */
+ion-note[color="danger"] {
+  background: #fff3f2;
+  border: 1px solid #f3c1bc;
+  padding: 6px 10px;
+  border-radius: 8px;
 }

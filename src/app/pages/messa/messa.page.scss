@@ -1,52 +1,144 @@
+/* Palette locale (fallback se non definita globalmente) */
 :host {
-  --paper: #f6f1e1;
-  --ink: #3a2d20;
-  --ink-soft: #6b5642;
+  --vintage-ink: #2e2b29;
+  --parchment: #f7f1e3;
+  --parchment-line: #d9c8a8;
+  --accent-1: #8c6b4f;
+  --accent-2: #a27b5c;
+
+  /* liturgical colors */
+  --lit-green: #3f8f4e;
+  --lit-red: #c0392b;
+  --lit-purple: #6f3b82;
+  --lit-white: #bbb6a8;
+  --lit-rose: #c96a8a;
+  --lit-black: #2b2b2b;
+  --lit-gold: #b8860b;
 }
 
+/* header pergamena */
 .parchment-header {
-  background: var(--paper);
-  border-bottom: 2px solid var(--ink);
+  --background: linear-gradient(180deg, var(--parchment), #f3ead4);
+  border-bottom: 1px solid var(--parchment-line);
+
+  ion-title.vintage-title {
+    display: inline-flex;
+    gap: .5rem;
+    align-items: center;
+    letter-spacing: .02em;
+    font-family: "IM Fell English SC", "Cardo", serif;
+  }
 }
 
-.vintage-title {
-  font-family: "IM Fell English", "Goudy Old Style", Garamond, Georgia, serif;
-  letter-spacing: .5px;
-  text-transform: uppercase;
-  color: var(--ink);
-  display: flex;
-  gap: .5rem;
-  align-items: center;
+/* sfondo pergamena (niente @extend) */
+ion-content.parchment-body {
+  --background:
+    radial-gradient(80% 120% at 50% 0%, #fff8ea 0%, var(--parchment) 70%),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.02), rgba(0,0,0,.02) 1px, transparent 1px, transparent 4px);
+  color: var(--vintage-ink);
+  font-family: "Cardo", serif;
 }
 
-.parchment-body {
-  --background: none;
-  background:
-    radial-gradient(ellipse at top left, rgba(255,255,255,.8), rgba(255,255,255,0)) 0 0/60% 60%,
-    radial-gradient(ellipse at bottom right, rgba(255,255,255,.6), rgba(255,255,255,0)) 100% 100%/60% 60%,
-    linear-gradient(#efe8d6, #f6f1e1);
-  color: var(--ink);
+/* fascia meta */
+.header-meta {
+  text-align: center;
+  padding: 16px 12px;
+
+  .meta-line {
+    opacity: .85;
+    display: inline-flex;
+    gap: .5rem;
+    align-items: center;
+    font-size: .95rem;
+  }
+
+  .dot { opacity: .5; }
 }
 
-.banner-date { padding: 16px; text-align: center; }
-.banner-date .meta { color: var(--ink-soft); display: inline-flex; gap: .4rem; align-items: center; }
-.banner-date .sep { opacity: .6; }
-
-.chip-liturgical { border: 1px dashed var(--ink-soft); margin-bottom: 8px; }
-
-.list-vintage .reading {
-  --background: #fffdf5;
-  margin: 10px 12px;
-  padding: 12px;
-  border: 2px solid var(--ink);
-  border-radius: 14px;
-  box-shadow: 0 6px 0 #d9cdb6, inset 0 0 30px rgba(138,90,68,.08);
+/* chip liturgico + varianti colore */
+.chip-liturgical {
+  --background: #efe6d0;
+  --color: var(--vintage-ink);
+  border: 1px solid var(--parchment-line);
+  box-shadow: 0 1px 0 rgba(0,0,0,.06);
+  margin-bottom: 6px;
 }
 
-.tipo { font-weight: 700; color: var(--ink); }
-.ref { font-style: italic; color: var(--ink-soft); margin-bottom: 6px; }
+.chip-liturgical.lit-green  { --background: var(--lit-green);  --color: #fff; }
+.chip-liturgical.lit-red    { --background: var(--lit-red);    --color: #fff; }
+.chip-liturgical.lit-purple { --background: var(--lit-purple); --color: #fff; }
+.chip-liturgical.lit-white  { --background: var(--lit-white);  --color: #2e2b29; }
+.chip-liturgical.lit-rose   { --background: var(--lit-rose);   --color: #fff; }
+.chip-liturgical.lit-black  { --background: var(--lit-black);  --color: #fff; }
+.chip-liturgical.lit-gold   { --background: var(--lit-gold);   --color: #2e2b29; }
+.chip-liturgical.lit-neutral{ --background: #efe6d0;           --color: var(--vintage-ink); }
 
-.prose { line-height: 1.5; }
-pre { white-space: pre-wrap; margin: 0; }
+/* lista e item letture */
+ion-list.list-vintage {
+  background: transparent;
+  padding: 0 10px 14px;
+}
 
-.center-spinner, .center-note { display: block; margin: 40px auto; text-align: center; }
+ion-item.reading {
+  --background: transparent;
+  align-items: flex-start;
+  border-left: 3px solid var(--accent-1);
+  background: linear-gradient(90deg, rgba(162,123,92,.08), transparent 60%);
+  margin: 10px 0;
+  border-radius: 10px;
+  padding: 6px 2px;
+
+  ion-icon { opacity: .75; }
+
+  .reading-type {
+    font-weight: 700;
+    letter-spacing: .02em;
+    font-family: "IM Fell English SC", "Cardo", serif;
+  }
+
+  .reading-ref {
+    opacity: .8;
+    font-style: italic;
+  }
+
+  .prose {
+    margin-top: .4rem;
+    line-height: 1.6;
+    text-align: justify;
+
+    /* capolettera */
+    p:first-of-type::first-letter,
+    pre:first-of-type::first-letter,
+    div:first-of-type::first-letter {
+      font-family: "IM Fell English SC", "Cardo", serif;
+      font-size: 2.2rem;
+      line-height: 1;
+      float: left;
+      padding: .15rem .35rem .1rem 0;
+      color: var(--accent-2);
+    }
+
+    pre {
+      background: transparent;
+      font-family: "Cardo", serif;
+      white-space: pre-wrap;
+      margin: 0;
+    }
+  }
+}
+
+/* stato caricamento/errore */
+.state {
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+
+  ion-note[color="danger"] {
+    background: #fff3f2;
+    border: 1px solid #f3c1bc;
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+}
