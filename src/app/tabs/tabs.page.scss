@@ -1,1 +1,111 @@
+/* ---------- TAB BAR: pergamena sobria ---------- */
+ion-tab-bar {
+  z-index: 10;
+  min-height: 52px;
+  padding: 4px 6px calc(env(safe-area-inset-bottom) + 6px);
 
+  --background: linear-gradient(180deg, var(--parchment-2), var(--parchment));
+  --color: color-mix(in oklab, var(--vintage-ink) 80%, transparent);
+  --color-selected: var(--vintage-ink);
+
+  border-top: 1px solid var(--parchment-line);
+  box-shadow: 0 -2px 10px rgba(0,0,0,.06);
+}
+
+/* ---------- TAB BUTTON: solo icone + label, niente box ---------- */
+ion-tab-button {
+  background: transparent;
+  border: 0;
+  margin: 0 2px;
+  padding: 2px 6px;
+  min-height: 48px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+
+  color: inherit;
+  transition: transform .08s ease, color .12s ease;
+}
+
+ion-tab-button:active { transform: translateY(1px); }
+
+/* Icone grandi e “stampate” */
+ion-tab-button ion-icon {
+  font-size: 1.7rem;              /* grande di base */
+  line-height: 1;
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,.4)); /* rilievo da pergamena */
+  opacity: .95;
+  transition: font-size .12s ease, color .12s ease, opacity .12s ease;
+}
+
+/* Label chiara, serif */
+ion-tab-button ion-label {
+  font-family: "IM Fell English SC", "Cardo", serif;
+  font-size: 0.98rem;
+  letter-spacing: .01em;
+  line-height: 1.05;
+}
+
+/* ---------- Stato selezionato: colore liturgico + sottolineatura ---------- */
+ion-tab-button[aria-selected="true"] {
+  color: var(--accent-1);
+}
+
+ion-tab-button[aria-selected="true"] ion-icon {
+  font-size: 1.95rem;             /* ancora più grande */
+  color: var(--accent-1);
+}
+
+ion-tab-button[aria-selected="true"] ion-label {
+  color: var(--accent-1);
+  font-weight: 700;
+}
+
+/* Sottolineatura “inchiostro” sotto il tab attivo */
+ion-tab-button::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 26%;
+  height: 3px;
+  transform: translateX(-50%);
+  border-radius: 3px;
+  background: transparent;
+  transition: background .12s ease, width .12s ease;
+}
+ion-tab-button[aria-selected="true"]::after {
+  background: var(--accent-1);
+  width: 34%;
+}
+
+/* ---------- Hover (desktop) ---------- */
+@media (hover: hover) {
+  ion-tab-button:hover {
+    color: var(--vintage-ink);
+  }
+  ion-tab-button:hover ion-icon { opacity: 1; }
+}
+
+/* ---------- Focus accessibile ---------- */
+ion-tab-button:focus-visible {
+  outline: 2px dashed rgba(0,0,0,.18);
+  outline-offset: 4px;
+}
+
+/* ---------- Dark mode soft ---------- */
+:host-context(.ion-palette-dark) ion-tab-bar {
+  --background: linear-gradient(180deg, #2c2b27, #23231f);
+  --color: #e7e2d8;
+  --color-selected: #fff;
+  border-top-color: rgba(255,255,255,.12);
+  box-shadow: 0 -2px 12px rgba(0,0,0,.4);
+}
+:host-context(.ion-palette-dark) ion-tab-button[aria-selected="true"] {
+  color: #caa37a;                 /* accent “cera” in dark */
+}
+:host-context(.ion-palette-dark) ion-tab-button[aria-selected="true"]::after {
+  background: #caa37a;
+}

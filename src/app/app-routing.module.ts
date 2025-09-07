@@ -7,15 +7,24 @@ const routes: Routes = [
 
   {
     path: 'tabs',
-    loadChildren: () =>
-      import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
 
-  // Dettagli (standalone, fuori dalle tabs)
+  // Pagine fuori dalle tabs (standalone)
   {
     path: 'messa/:date',
     loadComponent: () =>
       import('./pages/messa/messa.page').then(m => m.MessaPage)
+  },
+  {
+    path: 'liturgia/:date',
+    loadComponent: () =>
+      import('./pages/liturgia/liturgia.page').then(m => m.LiturgiaPage)
+  },
+  {
+    path: 'liturgia',
+    loadComponent: () =>
+      import('./pages/liturgia/liturgia.page').then(m => m.LiturgiaPage)
   },
   // Metti prima la più specifica
   {
@@ -35,7 +44,7 @@ const routes: Routes = [
   },
 
   // SEMPRE per ultima
-  { path: '**', redirectTo: '/tabs/tab1' },
+  { path: '**', redirectTo: '/tabs/tab1' }
 ];
 
 @NgModule({

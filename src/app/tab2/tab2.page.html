@@ -1,17 +1,113 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 2
+<ion-header class="parchment-header">
+  <ion-toolbar color="light">
+    <ion-title class="vintage-title">
+      <ion-icon name="calendar-outline"></ion-icon>
+      Calendario della Settimana
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="prevWeek()" aria-label="Settimana precedente">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="thisWeek()" aria-label="Torna a questa settimana">
+        OGGI
+      </ion-button>
+      <ion-button (click)="nextWeek()" aria-label="Settimana successiva">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-toolbar class="sub">
+    <ion-title size="small">
+      <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+      {{ mondayIso | date:'EEE d MMM' : undefined : 'it-IT' | titlecase }}
+      —
+      {{ sundayIso | date:'EEE d MMM yyyy' : undefined : 'it-IT' | titlecase }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="parchment-body" [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="loadWeek($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <!-- Calendario “foglietti” -->
+  <div class="tear-pad" *ngIf="!loading && !error; else stateTpl">
+    <div class="pad-spine" aria-hidden="true"></div>
+
+    <ion-list class="tear-list list-plain">
+      <ion-item
+        class="tear-sheet"
+        *ngFor="let d of days; trackBy: trackByDate"
+        [routerLink]="['/liturgia', d.date]"
+        [attr.aria-label]="'Apri liturgia del ' + (d.date | date:'EEEE d MMMM yyyy':undefined:'it-IT' | titlecase)"
+        routerDirection="forward"
+        detail
+      >
+        <!-- perforazioni decorative -->
+        <span class="perforation" aria-hidden="true"></span>
+
+        <!-- medaglione giorno -->
+        <div slot="start" class="tear-medal" aria-hidden="true">
+          <div class="num">{{ d.date | date:'d' : undefined : 'it-IT' }}</div>
+          <div class="mon">{{ d.date | date:'MMM' : undefined : 'it-IT' }}</div>
+        </div>
+
+        <!-- testi -->
+        <ion-label>
+          <div class="line-1">
+            <span class="weekday">{{ d.weekday | titlecase }}</span>
+            <span class="dash"></span>
+            <span class="shortdate">{{ d.date | date:'EEE d MMM' : undefined : 'it-IT' | titlecase }}</span>
+          </div>
+
+          <div class="line-2 festa" *ngIf="d.liturgia?.festa; else nofesta">
+            {{ d.liturgia!.festa }}
+          </div>
+          <ng-template #nofesta>
+            <div class="line-2 muted">—</div>
+          </ng-template>
+
+          <div class="line-3 reading" *ngIf="primaryReadingLabel(d.liturgia) as pr">
+            <ion-icon name="bookmark-outline" aria-hidden="true"></ion-icon>
+            <span>{{ pr }}</span>
+          </div>
+        </ion-label>
+
+        <!-- sigillo cera (colore liturgico) - versione senza optional chaining -->
+        <ng-container *ngIf="d.liturgia as lit">
+          <span
+            class="wax-seal"
+            [ngClass]="litColorClass(lit)"
+            [attr.aria-label]="lit.color_label || lit.color_key"
+            [title]="lit.color_label || lit.color_key"
+            slot="end"
+          >
+            {{ (lit.color_label || lit.color_key || '—') | slice:0:1 }}
+          </span>
+        </ng-container>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- Stati -->
+  <ng-template #stateTpl>
+    <ion-list *ngIf="loading">
+      <ion-item *ngFor="let i of [0,1,2,3,4,5,6]" class="tear-sheet">
+        <div slot="start" class="tear-medal skeleton"></div>
+        <ion-label>
+          <h2><ion-skeleton-text [animated]="true" style="width: 60%"></ion-skeleton-text></h2>
+          <p><ion-skeleton-text [animated]="true" style="width: 85%"></ion-skeleton-text></p>
+          <p><ion-skeleton-text [animated]="true" style="width: 55%"></ion-skeleton-text></p>
+        </ion-label>
+        <span class="wax-seal skeleton" slot="end"></span>
+      </ion-item>
+    </ion-list>
+
+    <ion-item *ngIf="!loading && error">
+      <ion-label color="danger">{{ error }}</ion-label>
+    </ion-item>
+  </ng-template>
 </ion-content>
