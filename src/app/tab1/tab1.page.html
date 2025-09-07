@@ -1,7 +1,7 @@
 <ion-header class="parchment-header">
   <ion-toolbar color="light">
     <ion-title class="vintage-title">
-      <ion-icon name="book-outline"></ion-icon>
+      <ion-icon name="book-outline" aria-hidden="true"></ion-icon>
       Almanacco del Monaco
     </ion-title>
   </ion-toolbar>
@@ -10,174 +10,152 @@
 <ion-content class="parchment-body" [fullscreen]="true">
   <ng-container *ngIf="!loading && !error; else stateTpl">
 
-    <!-- Liturgia di oggi -->
-    <ion-card class="card-vintage">
+    <!-- ========== LITURGIA DI OGGI ========== -->
+    <ion-card class="card-vintage liturgia-card">
       <ion-card-header>
         <ion-card-title class="section-title">
-          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          <ion-icon name="shield-checkmark-outline" aria-hidden="true"></ion-icon>
           Liturgia di oggi
         </ion-card-title>
 
+        <!-- Chip colore liturgico -->
         <ng-container *ngIf="liturgia as lit">
-          <ion-chip class="chip-liturgical" [ngClass]="litColorClass(lit)" aria-label="Colore liturgico">
-            <ion-label>{{ lit.color_label || '—' }}</ion-label>
+          <ion-chip class="chip-liturgical" [ngClass]="litColorClass(lit)">
+            <ion-label>{{ lit.color_label || lit.color_key || '—' }}</ion-label>
           </ion-chip>
         </ng-container>
       </ion-card-header>
 
+      <!-- KV + ricorrenza senza etichetta “ricorrenza” -->
       <ion-card-content *ngIf="liturgia as lit">
-        <dl class="kv">
+        <div class="kv-table">
           <div class="kv-row">
-            <dt>Tempo</dt>
-            <dd class="tempo">{{ lit.season }}</dd>
+            <div class="kv-key">TEMPO</div>
+            <div class="kv-val">{{ lit.season }}</div>
           </div>
           <div class="kv-row" *ngIf="lit.week">
-            <dt>Settimana</dt>
-            <dd>{{ lit.week }}</dd>
+            <div class="kv-key">SETTIMANA</div>
+            <div class="kv-val">{{ lit.week }}</div>
           </div>
-          <div class="kv-row" *ngIf="lit.festa">
-            <dt>Ricorrenza</dt>
-            <dd><span class="pill festa">{{ lit.festa }}</span></dd>
+        </div>
+
+        <div class="festa-badge" *ngIf="lit.festa">
+          {{ (lit.festa | uppercase) }}
+        </div>
+
+        <!-- Letture (prime 3) -->
+        <div class="readings">
+          <div class="reading-block" *ngFor="let l of (lit.letture || []) | slice:0:3">
+            <div class="r-head">
+              <div class="r-tipo">{{ l.tipo }}</div>
+              <div class="r-ref">{{ l.riferimento }}</div>
+            </div>
+            <div class="r-body" *ngIf="l.snippet">{{ l.snippet }}</div>
           </div>
-        </dl>
+        </div>
 
-        <ion-list inset class="list-plain" *ngIf="(lit.letture?.length || 0) > 0">
-          <ion-item lines="none" *ngFor="let l of (lit.letture || []) | slice:0:3" class="reading">
-            <ion-icon name="bookmark-outline" slot="start" aria-hidden="true"></ion-icon>
-            <ion-label>
-              <div class="lettura-tipo"><strong>{{ l.tipo }}</strong></div>
-              <div class="muted">{{ l.riferimento }}</div>
-              <div class="lettura-snippet" *ngIf="l.snippet">{{ l.snippet }}</div>
-            </ion-label>
-          </ion-item>
-        </ion-list>
-
-        <ion-button size="small" fill="outline" [routerLink]="['/messa', today]">
+        <ion-button size="small" fill="outline" [routerLink]="['/messa', today]" class="btn-primary">
           Vai al dettaglio letture
           <ion-icon name="chevron-forward-outline" slot="end" aria-hidden="true"></ion-icon>
         </ion-button>
       </ion-card-content>
     </ion-card>
 
-    <!-- Santi del giorno (max 2) -->
+    <!-- ========== SANTI DEL GIORNO (max 2) ========== -->
     <ion-card class="card-vintage santi-card" *ngIf="(santi?.length || 0) > 0">
       <ion-card-header>
         <ion-card-title class="section-title">
-          <ion-icon name="ribbon-outline"></ion-icon>
+          <ion-icon name="ribbon-outline" aria-hidden="true"></ion-icon>
           Santi del giorno
         </ion-card-title>
       </ion-card-header>
 
       <ion-card-content>
-        <ion-list inset class="list-plain">
-          <ion-item
-            button
-            [detail]="true"
-            class="saint-item"
+        <div class="saints-list">
+          <a
+            class="saint-card"
             *ngFor="let s of (santi | slice:0:2); trackBy: trackBySanto"
             [routerLink]="['/santo', today, s.id]"
           >
-            <div class="emoji-circle" slot="start" *ngIf="s.emoji">{{ s.emoji }}</div>
-            <ion-icon *ngIf="!s.emoji" slot="start" name="sparkles-outline" class="emoji-fallback" aria-hidden="true"></ion-icon>
-
-            <ion-label>
-              <div class="saint-title">{{ s.titolo }}</div>
-              <div class="saint-sub" *ngIf="s.sottotitolo">{{ s.sottotitolo }}</div>
-              <div class="saint-meta">
-                <span class="pill patrono" *ngIf="s.patronato">Patrono: {{ s.patronato }}</span>
-              </div>
-              <p class="saint-snippet clamp-2" *ngIf="s.snippet">{{ s.snippet }}</p>
-            </ion-label>
-
-            <ion-icon name="chevron-forward-outline" slot="end" aria-hidden="true"></ion-icon>
-          </ion-item>
-        </ion-list>
+            <div class="s-title dropcap">{{ s.titolo }}</div>
+            <div class="s-sub" *ngIf="s.sottotitolo">{{ s.sottotitolo }}</div>
+            <div class="s-snippet" *ngIf="s.snippet">{{ s.snippet }}</div>
+          </a>
+        </div>
       </ion-card-content>
     </ion-card>
 
-    <!-- Natura & Campi -->
-    <ion-card class="card-vintage" *ngIf="natura as nat">
+    <!-- ========== NATURA & CAMPI (folio monastico) ========== -->
+    <ion-card class="card-vintage natura-v3" *ngIf="natura as nat">
       <ion-card-header>
         <ion-card-title class="section-title">
-          <ion-icon name="leaf-outline"></ion-icon>
+          <ion-icon name="leaf-outline" aria-hidden="true"></ion-icon>
           Natura & Campi
         </ion-card-title>
       </ion-card-header>
 
       <ion-card-content>
-        <ion-list inset class="mini-table">
-          <ion-item lines="none" class="item-orto">
-            <ion-icon slot="start" name="shapes-outline" aria-hidden="true"></ion-icon>
-            <ion-label>Orto</ion-label>
-            <ion-note slot="end" class="value">{{ nat.orto || '—' }}</ion-note>
-          </ion-item>
+        <div class="folio">
+          <div class="spine" aria-hidden="true"></div>
+          <ul class="folio-list">
+            <li class="folio-item orto" *ngIf="nat.orto">
+              <div class="item-title">ORTO</div>
+              <div class="item-text">{{ nat.orto }}</div>
+            </li>
+            <li class="folio-item giardino" *ngIf="nat.giardino">
+              <div class="item-title">GIARDINO</div>
+              <div class="item-text">{{ nat.giardino }}</div>
+            </li>
+            <li class="folio-item piante" *ngIf="nat.piante">
+              <div class="item-title">PIANTE</div>
+              <div class="item-text">{{ nat.piante }}</div>
+            </li>
+            <li class="folio-item cucina" *ngIf="nat.cucina">
+              <div class="item-title">CUCINA</div>
+              <div class="item-text">{{ nat.cucina }}</div>
+            </li>
+            <li class="folio-item luna" *ngIf="nat.lunaFase || nat.lunaEmoji">
+              <div class="item-title">LUNA</div>
+              <div class="item-text">
+                <span *ngIf="nat.lunaEmoji">{{ nat.lunaEmoji }} </span>{{ nat.lunaFase || '—' }}
+              </div>
+            </li>
+            <li class="folio-item alba" *ngIf="nat.alba">
+              <div class="item-title">ALBA</div>
+              <div class="item-text">{{ nat.alba }}</div>
+            </li>
+            <li class="folio-item tramonto" *ngIf="nat.tramonto">
+              <div class="item-title">TRAMONTO</div>
+              <div class="item-text">{{ nat.tramonto }}</div>
+            </li>
+          </ul>
+        </div>
 
-          <ion-item lines="none" class="item-giardino">
-            <ion-icon slot="start" name="flower-outline" aria-hidden="true"></ion-icon>
-            <ion-label>Giardino</ion-label>
-            <ion-note slot="end" class="value">{{ nat.giardino || '—' }}</ion-note>
-          </ion-item>
-
-          <ion-item lines="none" class="item-piante">
-            <ion-icon slot="start" name="color-wand-outline" aria-hidden="true"></ion-icon>
-            <ion-label>Piante</ion-label>
-            <ion-note slot="end" class="value">{{ nat.piante || '—' }}</ion-note>
-          </ion-item>
-
-          <ion-item lines="none" class="item-cucina">
-            <ion-icon slot="start" name="restaurant-outline" aria-hidden="true"></ion-icon>
-            <ion-label>Cucina</ion-label>
-            <ion-note slot="end" class="value">{{ nat.cucina || '—' }}</ion-note>
-          </ion-item>
-
-          <ion-item lines="none" class="item-luna" *ngIf="nat.lunaFase || nat.lunaEmoji">
-            <ion-icon slot="start" name="planet-outline" aria-hidden="true"></ion-icon>
-            <ion-label>Luna</ion-label>
-            <ion-note slot="end" class="value">
-              <span *ngIf="nat.lunaEmoji">{{ nat.lunaEmoji }} </span>{{ nat.lunaFase || '—' }}
-            </ion-note>
-          </ion-item>
-
-          <ion-item lines="none" class="item-alba" *ngIf="nat.alba">
-            <ion-icon slot="start" name="sunny-outline" aria-hidden="true"></ion-icon>
-            <ion-label>Alba</ion-label>
-            <ion-note slot="end" class="value">{{ nat.alba }}</ion-note>
-          </ion-item>
-
-          <ion-item lines="none" class="item-tramonto" *ngIf="nat.tramonto">
-            <ion-icon slot="start" name="sunset-outline" aria-hidden="true"></ion-icon>
-            <ion-label>Tramonto</ion-label>
-            <ion-note slot="end" class="value">{{ nat.tramonto }}</ion-note>
-          </ion-item>
-        </ion-list>
-
-        <ion-button size="small" fill="outline" [routerLink]="['/natura', today]">
+        <ion-button size="small" fill="outline" [routerLink]="['/natura', today]" class="btn-primary">
           Apri dettaglio Natura
           <ion-icon name="chevron-forward-outline" slot="end" aria-hidden="true"></ion-icon>
         </ion-button>
       </ion-card-content>
     </ion-card>
 
-    <!-- Consiglio del Monaco -->
-    <ion-card class="card-vintage" *ngIf="proverbio as pro" >
-      <ng-container *ngIf="pro.consiglio">
-        <ion-card-header>
-          <ion-card-title class="section-title">
-            <ion-icon name="sparkles-outline"></ion-icon>
-            Consiglio del Monaco
-          </ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <blockquote class="monk-tip">{{ pro.consiglio }}</blockquote>
-        </ion-card-content>
-      </ng-container>
+    <!-- ========== CONSIGLIO DEL MONACO ========== -->
+    <ion-card class="card-vintage" *ngIf="proverbio?.consiglio">
+      <ion-card-header>
+        <ion-card-title class="section-title">
+          <ion-icon name="sparkles-outline" aria-hidden="true"></ion-icon>
+          Consiglio del Monaco
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <blockquote class="monk-tip">{{ proverbio?.consiglio }}</blockquote>
+      </ion-card-content>
     </ion-card>
 
-    <!-- Citazione & Proverbio -->
+    <!-- ========== CITAZIONE & PROVERBIO ========== -->
     <ion-card class="card-vintage" *ngIf="proverbio as pro">
       <ion-card-header>
         <ion-card-title class="section-title">
-          <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+          <ion-icon name="chatbubble-ellipses-outline" aria-hidden="true"></ion-icon>
           Citazione & Proverbio
         </ion-card-title>
       </ion-card-header>
@@ -188,7 +166,6 @@
         </figure>
 
         <div class="proverbio" *ngIf="pro.testo">
-          <ion-icon name="ribbon-outline" aria-hidden="true"></ion-icon>
           <em>«{{ pro.testo }}»</em>
         </div>
       </ion-card-content>

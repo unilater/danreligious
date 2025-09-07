@@ -97,7 +97,8 @@ export class Tab1Page implements OnInit {
   }
 
   /** Restituisce una classe CSS per colorare il chip secondo il colore liturgico */
-  litColorClass(l?: { color_key?: string; color_label?: string }): string {
+litColorClass(l?: { color_key?: string; color_label?: string } | null): string {
+
     if (!l) return 'neutro';
     const txt = `${l.color_key ?? ''} ${l.color_label ?? ''}`.toLowerCase();
     if (txt.includes('verde') || txt.includes('green'))  return 'lit-verde';

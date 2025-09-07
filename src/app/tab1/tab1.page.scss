@@ -1,277 +1,318 @@
-/* -------------------- CARD “PERGAMENA” -------------------- */
+/* ============================================================
+   TAB1 — Stile monastico/letterpress (coerente con global.scss)
+   Usa variabili globali: --font-display, --font-body, palette *
+   ============================================================ */
+
+/* ---------- Intestazione & pergamena ---------- */
+.parchment-header{
+  --background: linear-gradient(180deg, var(--parchment), #f3ead4);
+  border-bottom: 1px solid var(--parchment-line);
+}
+.parchment-header .vintage-title{
+  display: inline-flex;
+  gap: .5rem;
+  align-items: center;
+  font-family: var(--font-display);
+  letter-spacing: .02em;
+}
+
+.parchment-body{
+  --background:
+    radial-gradient(80% 120% at 50% 0%, #fff8ea 0%, var(--parchment) 70%),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.02), rgba(0,0,0,.02) 1px, transparent 1px, transparent 4px);
+}
+
+/* ---------- Card pergamena (solo micro-tocchi locali) ---------- */
 ion-card.card-vintage,
-ion-card {
+ion-card{
   background: linear-gradient(180deg, #fffdf8, var(--parchment));
   border: 1px solid var(--parchment-line);
   border-radius: 14px;
   box-shadow: 0 2px 0 rgba(0,0,0,.06), 0 10px 20px rgba(0,0,0,.04);
   overflow: hidden;
-  margin-inline: 12px;
+  margin: 12px;
 }
 
-/* -------------------- TITOLI SEZIONE ---------------------- */
-ion-card-header {
-  position: relative;
-  padding-bottom: 10px;
-}
-
-ion-card-title.section-title {
-  font-family: "IM Fell English SC", "Cardo", serif;
-  font-size: 1.22rem;
+/* ---------- Titoli sezione ---------- */
+.section-title{
+  font-family: var(--font-display);
+  font-size: 1.20rem;
   display: inline-flex;
   align-items: center;
-  gap: .5rem;
-
-  &::after {
-    content: "";
-    flex: 1 1 auto;
-    height: 1px;
-    background: linear-gradient(90deg, var(--parchment-line), transparent);
-    margin-left: .6rem;
-    opacity: .8;
-  }
-
-  ion-icon {
-    font-size: 1.25rem;
-    opacity: .95;
-  }
+  gap: .6rem;
+  position: relative;
+}
+.section-title::after{
+  content: "";
+  height: 1px;
+  opacity: .85;
+  background: linear-gradient(90deg, var(--parchment-line), transparent);
+  flex: 1 1 auto;
+  margin-left: .6rem;
 }
 
-/* -------------------- CHIP LITURGICO ---------------------- */
-/* base */
-ion-chip.chip-liturgical {
-  --background: #efe9d6;
+/* ============================================================
+   1) L I T U R G I A   D I   O G G I
+   ============================================================ */
+
+.liturgia-card ion-card-header{ padding-bottom: 6px; }
+
+/* Chip colore: più aria rispetto al titolo */
+.liturgia-card .chip-liturgical{
+  margin-top: 12px;
+  height: 30px;
+  --background: #efe6d0;
   --color: var(--vintage-ink);
   border: 1px solid var(--parchment-line);
   box-shadow: 0 1px 0 rgba(0,0,0,.06);
-  height: 28px;
 }
 
-/* varianti: allineate a litColorClass() => lit-verde, lit-bianco, ... */
-ion-chip.chip-liturgical.lit-verde  { --background: #e2f2e4; --color:#154f1b; border-color:#bfe5c3; }
-ion-chip.chip-liturgical.lit-bianco { --background: #ffffff; --color:#2e2a23; border-color:#e7e0c8; }
-ion-chip.chip-liturgical.lit-rosso  { --background: #fde6e6; --color:#7b1010; border-color:#f3caca; }
-ion-chip.chip-liturgical.lit-viola  { --background: #efe6fa; --color:#45286f; border-color:#dccbf6; }
-ion-chip.chip-liturgical.lit-rosa   { --background: #ffe9f0; --color:#8f2856; border-color:#ffcfe0; }
-ion-chip.chip-liturgical.lit-neutro { --background: #efe9d6; --color: var(--monk-ink); }
+/* Varianti coerenti con litColorClass() */
+.chip-liturgical.lit-verde  { --background:#e2f2e4; --color:#154f1b; border-color:#bfe5c3; }
+.chip-liturgical.lit-bianco { --background:#ffffff; --color:#2e2a23; border-color:#e7e0c8; }
+.chip-liturgical.lit-rosso  { --background:#fde6e6; --color:#7b1010; border-color:#f3caca; }
+.chip-liturgical.lit-viola  { --background:#efe6fa; --color:#45286f; border-color:#dccbf6; }
+.chip-liturgical.lit-rosa   { --background:#ffe9f0; --color:#8f2856; border-color:#ffcfe0; }
+.chip-liturgical.lit-neutro { --background:#efe9d6; --color:var(--vintage-ink); }
 
-/* -------------------- LISTE NEUTRE ------------------------ */
-.list-plain {
-  --ion-item-background: transparent;
-  --ion-item-border-color: var(--parchment-line);
-}
-
-/* Letture */
-ion-item.reading {
-  --background: transparent;
-  border-bottom: 1px dashed var(--parchment-line);
-
-  ion-icon { opacity: .8; font-size: 1.15rem; }
-  ion-label div:first-child { letter-spacing: .02em; }  /* tipo */
-  ion-label div:nth-child(2) { opacity: .7; }           /* riferimento */
-}
-
-/* -------------------- KV (INFO LITURGICHE) ---------------- */
-.kv { margin: 6px 0 10px; }
-.kv-row {
+/* KV (Tempo/Settimana) con forte definizione */
+.kv-table{ margin-top: 12px; }
+.kv-table .kv-row{
   display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: .75rem;
+  grid-template-columns: 150px 1fr;
+  gap: .9rem;
+  padding: 8px 0;
   align-items: baseline;
-  padding: 3px 0;
   border-bottom: 1px dashed var(--parchment-line);
 }
-.kv-row:last-child { border-bottom: 0; }
+.kv-table .kv-row:last-child{ border-bottom: 0; }
 
-.kv dt {
-  margin: 0;
-  font-variant: all-small-caps;
-  letter-spacing: .06em;
+.kv-table .kv-key{
+  font-family: var(--font-display);
+  font-variant-caps: small-caps;
+  letter-spacing: .08em;
   font-weight: 700;
-  color: var(--vintage-ink);
-  opacity: .85;
+  color: rgba(46,43,41,.78); /* var(--vintage-ink) attenuato */
 }
-.kv dd { margin: 0; font-weight: 600; }
-.kv dd.tempo { font-weight: 800; }
+.kv-table .kv-val{
+  font-weight: 800;
+}
 
-/* “pill” per ricorrenza */
-.pill {
+/* Ricorrenza in cartiglio (senza etichetta) */
+.festa-badge{
+  margin: 16px 0 8px;
   display: inline-block;
-  padding: 2px 8px;
+  padding: 10px 16px;
   border-radius: 999px;
-  background: #f7efe6;
-  border: 1px solid var(--parchment-line);
+  background: #f3ebde;
+  border: 2px solid #e0d0b3;
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: .02em;
 }
 
-/* -------------------- SANTI DEL GIORNO -------------------- */
-.santi-card { margin-top: 8px; }
-
-.saint-item {
-  --background: transparent;
-  --padding-start: 10px;
-  --padding-end: 8px;
-  border: 1px solid var(--parchment-line);
+/* Letture: riquadri ariosi, testo a capo, niente icone laterali */
+.readings{ margin-top: 10px; }
+.reading-block{
+  padding: 16px 16px;
+  margin: 12px 0;
   border-radius: 12px;
-  margin: 8px 0;
-  transition: transform .08s ease, box-shadow .12s ease, background .12s ease;
-
-  &:active {
-    transform: translateY(1px);
-    box-shadow: inset 0 2px 6px rgba(0,0,0,.06);
-    background: rgba(0,0,0,.02);
-  }
-}
-
-/* medaglione emoji */
-.emoji-circle {
-  width: 34px; height: 34px; border-radius: 50%;
-  display: grid; place-items: center;
-  font-size: 18px; line-height: 1;
-  background: #fffdf7;
   border: 1px solid var(--parchment-line);
-  box-shadow: 0 1px 0 rgba(0,0,0,.06);
-  margin-right: 6px;
+  background: linear-gradient(180deg, #fffcf6, #f8efdf);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
 }
-.emoji-fallback { opacity: .8; font-size: 1.1rem; }
-
-/* testi santi */
-.saint-title {
-  font-family: "IM Fell English SC", "Cardo", serif;
-  font-size: 1.04rem;
-  letter-spacing: .01em;
-  color: var(--vintage-ink);
+.r-head{
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem 1rem;
+  align-items: baseline;
 }
-.saint-sub { margin-top: 2px; font-size: .92rem; opacity: .75; }
-.saint-meta { margin-top: 6px; }
-.pill.patrono {
-  background: #eef6ff;
-  border: 1px solid #cfe5ff;
-  color: #25476b;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: .82rem;
+.r-tipo{
+  font-family: var(--font-display);
+  font-variant-caps: small-caps;
+  letter-spacing: .08em;
+  font-weight: 800;
 }
-
-.saint-snippet { margin: 6px 0 0; line-height: 1.45; opacity: .95; }
-.clamp-2 {
-  line-clamp: 2;
-  -webkit-line-clamp: 2;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* -------------------- NATURA & CAMPI ---------------------- */
-.mini-table {
-  --ion-item-background: transparent;
-
-  ion-item {
-    border: 1px solid var(--parchment-line);
-    border-radius: 12px;
-    margin: 8px 0;
-    --padding-start: 12px;
-    --padding-end: 10px;
-    align-items: center;
-
-    ion-icon[slot="start"] {
-      width: 28px; height: 28px;
-      border-radius: 999px;
-      display: grid; place-items: center;
-      padding: 6px;
-      border: 1px solid var(--badge-border, var(--parchment-line));
-      background: #fffdf8;
-      margin-right: 8px;
-      color: var(--monk-olive, #5b6b3f);
-    }
-
-    ion-label {
-      font-weight: 700;
-      white-space: nowrap;
-      min-width: 7ch;
-      margin-right: 6px;
-    }
-
-    .value {
-      max-width: 70%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      color: var(--value-color, #4b453c);
-      opacity: .95;
-      font-weight: 500;
-    }
-  }
-
-  .item-orto ion-icon[slot="start"]     { color: var(--monk-sage, #2f5a3a);  background: #eaf3ea; }
-  .item-giardino ion-icon[slot="start"] { color: #35614a;                    background: #eaf5ef; }
-  .item-piante ion-icon[slot="start"]   { color: var(--monk-brown, #6c4a2f); background: #f6efe7; }
-  .item-cucina ion-icon[slot="start"]   { color: var(--monk-gold, #b4882a);  background: #f8f1e2; }
-  .item-luna ion-icon[slot="start"]     { color: var(--monk-blue, #2b4a6f);  background: #edf3fa; }
-  .item-alba ion-icon[slot="start"]     { color: #b76e00;                    background: #fdf3e2; }
-  .item-tramonto ion-icon[slot="start"] { color: #a34b2b;                    background: #fceee9; }
-}
-
-/* -------------------- CITAZIONE & PROVERBIO --------------- */
-.monk-tip {
-  margin: 0;
-  line-height: 1.55;
+.r-ref{
+  font-style: italic;
+  opacity: .9;
   font-weight: 600;
-  font-size: 1.01rem;
+}
+.r-body{
+  margin-top: 8px;
+  line-height: 1.6;
+  word-break: break-word;
+}
+/* se nel DOM restano icone/chevron a destra, nascondiamoli */
+.reading-block ion-icon[slot="end"]{ display: none !important; }
+
+/* Pulsante outline coerente */
+.btn-primary{
+  margin-top: 10px;
+  --background: transparent;
+  border: 1.5px solid #c8b690;
+  border-radius: 12px;
+  padding-inline: 12px;
+  font-weight: 700;
+}
+
+/* ============================================================
+   2) S A N T I   D E L   G I O R N O
+   ============================================================ */
+
+.saints-list{ display: grid; gap: 12px; }
+
+.saint-card{
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--parchment-line);
+  border-radius: 14px;
+  padding: 14px 14px 12px;
+  background: linear-gradient(180deg, #fffdf8, #f9f4e9);
+  transition: transform .06s ease, box-shadow .12s ease;
+}
+.saint-card:active{
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 6px rgba(0,0,0,.06);
+}
+
+.s-title{
+  font-family: var(--font-display);
+  font-size: 1.18rem;
+  line-height: 1.25;
+  margin: 0 0 4px;
+}
+/* Drop cap sul titolo (stile incunabolo) */
+.s-title.dropcap::first-letter{
+  color: #8f1d1d;
+  font-size: 1.9em;
+  line-height: .85;
+  margin-right: .06em;
+}
+.s-sub{ opacity: .75; margin-bottom: 4px; }
+.s-snippet{ line-height: 1.55; }
+
+/* ============================================================
+   3) N A T U R A   &   C A M P I   (folio)
+   ============================================================ */
+
+.natura-v3 ion-card-header{ padding-bottom: 6px; }
+
+.natura-v3 .folio{
+  position: relative;
+  padding: 14px 14px 12px 24px;
+  border: 1px solid var(--parchment-line);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #fffdf8, #f9f3e6);
+  box-shadow: inset 0 1px 0 rgba(0,0,0,.03);
+}
+.natura-v3 .spine{
+  position: absolute;
+  left: 10px; top: 10px; bottom: 10px;
+  width: 4px; border-radius: 6px;
+  background: linear-gradient(180deg, #d9c8a8, #cdb893);
+}
+.natura-v3 .folio-list{
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 6px;
+}
+.natura-v3 .folio-item{
+  padding: 14px 2px;
+  border-bottom: 1px dashed var(--parchment-line);
+}
+.natura-v3 .folio-item:last-child{ border-bottom: 0; }
+
+/* Titolo categoria: alto contrasto, sempre leggibile */
+.natura-v3 .item-title{
+  display: inline-block;
+  padding: 4px 12px 3px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-variant-caps: small-caps;
+  letter-spacing: .10em;
+  font-weight: 800;
+  background: #2b2b2b; /* fallback scuro */
+  color: #fff;
+  border: 2px solid #cbb89a;
+  text-shadow: 0 1px 0 rgba(0,0,0,.25);
+}
+
+/* Testo categoria */
+.natura-v3 .item-text{
+  margin-top: 8px;
+  line-height: 1.6;
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--vintage-ink);
+  opacity: .95;
+}
+
+/* Varianti cromatiche per categoria (senza variabili monk-*) */
+.natura-v3 .orto     .item-title{ background:#2f5a3a; color:#fff; }
+.natura-v3 .giardino .item-title{ background:#2f6548; color:#fff; }
+.natura-v3 .piante   .item-title{ background:#6c4a2f; color:#fff; }
+.natura-v3 .cucina   .item-title{ background:#b4882a; color:#231a11; }
+.natura-v3 .luna     .item-title{ background:#2b4a6f; color:#fff; }
+.natura-v3 .alba     .item-title{ background:#b76e00; color:#fff; }
+.natura-v3 .tramonto .item-title{ background:#a34b2b; color:#fff; }
+
+/* ============================================================
+   4) C O N S I G L I O   /   C I T A Z I O N I
+   ============================================================ */
+
+.monk-tip{
+  margin: 0;
+  line-height: 1.6;
+  font-weight: 600;
+  font-size: 1.02rem;
   position: relative;
   padding-left: 12px;
 }
-.monk-tip::before {
+.monk-tip::before{
   content: "";
   position: absolute;
-  left: 0; top: 0.15em; bottom: 0.15em;
-  width: 3px;
-  border-radius: 6px;
+  left: 0; top: .15em; bottom: .15em;
+  width: 3px; border-radius: 6px;
   background: var(--accent-1);
-  opacity: .35;
+  opacity: .4;
 }
 
-.quote-wrap { margin: 0 0 8px; }
-.quote {
+.quote-wrap{ margin: 0 0 8px; }
+.quote{
   margin: 0;
   font-style: italic;
   line-height: 1.6;
-  position: relative;
-  padding: 6px 2px 6px 0;
 }
-.quote::before, .quote::after {
-  position: absolute;
-  font-family: "IM Fell English SC", "Cardo", serif;
-  font-size: 1.4rem;
-  opacity: .3;
-}
-.quote::before { content: "“"; left: -2px; top: -2px; }
-.quote::after  { content: "”"; right: -2px; bottom: -8px; }
-
-.quote-cap {
-  margin-top: 2px;
+.quote-cap{
   opacity: .6;
   font-size: .9rem;
 }
 
-.proverbio ion-icon {
-  margin-right: 6px;
-  opacity: .8;
+/* ============================================================
+   Stati di caricamento / errore
+   ============================================================ */
+.state{
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
 }
-
-/* -------------------- ICONE GLOBALI ----------------------- */
-ion-icon { font-size: 1.12rem; opacity: .92; }
-
-/* -------------------- ERROR NOTE -------------------------- */
-ion-note[color="danger"] {
-  background: #fff2f1;
-  border: 1px solid #f3b7b2;
-  color: #731b1b;
+ion-note[color="danger"]{
+  background:#fff2f1;
+  border:1px solid #f3b7b2;
+  color:#731b1b;
   padding: 6px 10px;
   border-radius: 8px;
+  margin-top: 10px;
 }
 
-/* -------------------- RESPONSIVE MINOR -------------------- */
-@media (max-width: 360px) {
-  ion-card { margin-inline: 8px; }
-  .kv-row { grid-template-columns: 102px 1fr; }
+/* ============================================================
+   Responsive minori
+   ============================================================ */
+@media (max-width: 380px){
+  .kv-table .kv-row{ grid-template-columns: 120px 1fr; }
+  .s-title{ font-size: 1.08rem; }
+  .natura-v3 .item-text{ font-size: 1rem; }
 }

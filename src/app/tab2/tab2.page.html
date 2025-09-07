@@ -38,57 +38,46 @@
     <div class="pad-spine" aria-hidden="true"></div>
 
     <ion-list class="tear-list list-plain">
-      <ion-item
-        class="tear-sheet"
-        *ngFor="let d of days; trackBy: trackByDate"
-        [routerLink]="['/liturgia', d.date]"
-        [attr.aria-label]="'Apri liturgia del ' + (d.date | date:'EEEE d MMMM yyyy':undefined:'it-IT' | titlecase)"
-        routerDirection="forward"
-        detail
-      >
-        <!-- perforazioni decorative -->
-        <span class="perforation" aria-hidden="true"></span>
+<ion-item
+  class="tear-sheet"
+  *ngFor="let d of days; trackBy: trackByDate"
+  [routerLink]="['/liturgia', d.date]"
+  routerDirection="forward"
+  detail
+>
+  <span class="perforation" aria-hidden="true"></span>
 
-        <!-- medaglione giorno -->
-        <div slot="start" class="tear-medal" aria-hidden="true">
-          <div class="num">{{ d.date | date:'d' : undefined : 'it-IT' }}</div>
-          <div class="mon">{{ d.date | date:'MMM' : undefined : 'it-IT' }}</div>
-        </div>
+  <!-- targa data a sinistra -->
+  <div slot="start" class="tear-medal">
+    <div class="num">{{ d.date | date:'d' : undefined : 'it-IT' }}</div>
+    <div class="mon">{{ d.date | date:'MMM' : undefined : 'it-IT' }}</div>
+  </div>
 
-        <!-- testi -->
-        <ion-label>
-          <div class="line-1">
-            <span class="weekday">{{ d.weekday | titlecase }}</span>
-            <span class="dash"></span>
-            <span class="shortdate">{{ d.date | date:'EEE d MMM' : undefined : 'it-IT' | titlecase }}</span>
-          </div>
+  <ion-label>
+    <!-- riga meta più compatta e armonica -->
+    <div class="line-1">
+      <span class="weekday">{{ d.weekday | titlecase }}</span>
+      <span class="dash" aria-hidden="true"></span>
+      <span class="shortdate">{{ d.date | date:'EEE d MMM' : undefined : 'it-IT' | titlecase }}</span>
+    </div>
 
-          <div class="line-2 festa" *ngIf="d.liturgia?.festa; else nofesta">
-            {{ d.liturgia!.festa }}
-          </div>
-          <ng-template #nofesta>
-            <div class="line-2 muted">—</div>
-          </ng-template>
+    <div class="line-2 festa" *ngIf="d.liturgia?.festa; else nofesta">
+      {{ d.liturgia?.festa | uppercase }}
+    </div>
+    <ng-template #nofesta><div class="line-2 muted">—</div></ng-template>
 
-          <div class="line-3 reading" *ngIf="primaryReadingLabel(d.liturgia) as pr">
-            <ion-icon name="bookmark-outline" aria-hidden="true"></ion-icon>
-            <span>{{ pr }}</span>
-          </div>
-        </ion-label>
+    <div class="line-3 reading" *ngIf="primaryReadingLabel(d.liturgia) as pr">
+      <ion-icon name="bookmark-outline" aria-hidden="true"></ion-icon>
+      <span>{{ pr }}</span>
+    </div>
 
-        <!-- sigillo cera (colore liturgico) - versione senza optional chaining -->
-        <ng-container *ngIf="d.liturgia as lit">
-          <span
-            class="wax-seal"
-            [ngClass]="litColorClass(lit)"
-            [attr.aria-label]="lit.color_label || lit.color_key"
-            [title]="lit.color_label || lit.color_key"
-            slot="end"
-          >
-            {{ (lit.color_label || lit.color_key || '—') | slice:0:1 }}
-          </span>
-        </ng-container>
-      </ion-item>
+    <!-- chip colore liturgico A CAPO -->
+    <div class="lit-tag" *ngIf="d.liturgia" [ngClass]="litColorClass(d.liturgia)">
+      {{ d.liturgia?.color_label || d.liturgia?.color_key || '—' }}
+    </div>
+  </ion-label>
+</ion-item>
+
     </ion-list>
   </div>
 

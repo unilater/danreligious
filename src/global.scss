@@ -1,95 +1,248 @@
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
+/* ------------------------------------------------------------------
+   GLOBAL “MONASTICO” — stile tipo Maranatha
+   ------------------------------------------------------------------ */
 
-/* Core CSS required for Ionic components to work properly */
+/* Font (Google) – puoi spostarli in index.html se preferisci */
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap');
+
+/* Font variables */
+:root{
+  --font-display: "EB Garamond", serif;
+  --font-body:    "Source Serif 4", serif;
+}
+
+/* Palette pergamena + accenti liturgici */
+:root{
+  --ink:            #1e1a16;
+  --ink-muted:      #6b6258;
+
+  --parchment:      #f7f1e3;
+  --parchment-2:    #efe3c7;
+  --parchment-line: #d9c8a8;
+
+  --gold:           #b88a2a;
+  --green:          #2f5a3a;
+  --wine:           #6f2b2b;
+
+  /* liturgical */
+  --lit-green:  #3f8f4e;
+  --lit-red:    #c0392b;
+  --lit-purple: #6f3b82;
+  --lit-white:  #bbb6a8;
+  --lit-rose:   #c96a8a;
+  --lit-black:  #2b2b2b;
+  --lit-gold:   #b8860b;
+}
+
+/* ------ Ionic base imports ------------------------------------------------ */
 @import "@ionic/angular/css/core.css";
-
-/* Basic CSS for apps built with Ionic */
 @import "@ionic/angular/css/normalize.css";
 @import "@ionic/angular/css/structure.css";
 @import "@ionic/angular/css/typography.css";
 @import "@ionic/angular/css/display.css";
-
-/* Optional CSS utils that can be commented out */
 @import "@ionic/angular/css/padding.css";
 @import "@ionic/angular/css/float-elements.css";
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
-
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-
 @import "@ionic/angular/css/palettes/dark.system.css";
 
-:root {
-  /* palette tenue */
-  --vintage-ink: #2e2b29;
-  --parchment: #f7f1e3;
-  --parchment-2: #efe3c7;
-  --parchment-line: #d9c8a8;
-
-  /* accenti */
-  --accent-1: #8c6b4f;
-  --accent-2: #a27b5c;
-
-  /* liturgical helpers (se ti servono per classi custom) */
-  --lit-green: #3f8f4e;
-  --lit-red: #c0392b;
-  --lit-purple: #6f3b82;
-  --lit-white: #bbb6a8;
-  --lit-rose: #c96a8a;
-  --lit-black: #2b2b2b;
-  --lit-gold: #b8860b;
+/* ------ Base tipografia --------------------------------------------------- */
+html, body, ion-app, ion-content{
+  font-family: var(--font-body);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings:"liga","kern","onum","pnum";
 }
-
-/* font & testo globali */
-html, body, ion-app, ion-content {
-  color: var(--vintage-ink);
-  font-family: "Cardo", serif;
-}
-
-.vintage-title, ion-title {
-  font-family: "IM Fell English SC", "Cardo", serif;
+h1,h2,h3, .vintage-title, ion-card-title.section-title{
+  font-family: var(--font-display);
+  font-weight: 600;
   letter-spacing: .02em;
 }
+.smallcaps, .h-label, .kv dt{
+  font-variant-caps: small-caps;
+  letter-spacing: .08em;
+}
 
-/* header pergamena (usa classe 'parchment-header' se vuoi) */
-.parchment-header {
+/* ------ Pergamena --------------------------------------------------------- */
+.parchment-header{
   --background: linear-gradient(180deg, var(--parchment) 0%, #f3ead4 100%);
   border-bottom: 1px solid var(--parchment-line);
 }
-
-/* corpo pergamena (usa classe 'parchment-body' su ion-content se vuoi) */
-.parchment-body {
-  --background: radial-gradient(80% 120% at 50% 0%, #fff8ea 0%, var(--parchment) 70%) fixed;
+.parchment-body{
+  --background:
+    radial-gradient(80% 120% at 50% 0%, #fff8ea 0%, var(--parchment) 70%) fixed;
   background-image:
     radial-gradient(80% 120% at 50% 0%, #fff8ea 0%, var(--parchment) 70%),
     repeating-linear-gradient(0deg, rgba(0,0,0,.02), rgba(0,0,0,.02) 1px, transparent 1px, transparent 4px);
 }
 
-/* centrature utili */
-.center-spinner { display: inline-block; margin: 16px auto; }
-.center-note { display: inline-block; margin-top: 10px; }
-
-/* micro-decorazioni orizzontali */
-.hr-vintage {
+/* ------ Titoli sezione alla “Mar.” --------------------------------------- */
+.section-title{
+  font-size: 1.28rem;
+  display: flex; align-items: center; gap: .6rem;
+}
+.section-title::after{
+  content:"";
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--parchment-line), transparent);
-  margin: 12px 0;
+  flex: 1 1 auto;
+  background: linear-gradient(90deg, var(--parchment-line), transparent);
+  opacity:.9;
+}
+
+/* spazio più arioso tra “colore liturgico” e titolo */
+.header-meta{ margin: 12px 0 4px; }
+
+/* ------ Card pergamena ---------------------------------------------------- */
+ion-card.card-vintage, ion-card{
+  background: linear-gradient(180deg, #fffdf7, var(--parchment));
+  border: 1px solid var(--parchment-line);
+  border-radius: 14px;
+  box-shadow: 0 2px 0 rgba(0,0,0,.06), 0 10px 20px rgba(0,0,0,.04);
+  overflow: hidden;
+  margin-inline: 12px;
+}
+
+/* ------ KV (Tempo/Settimana) ben contrastata ------------------------------ */
+.kv{ margin: 8px 0 12px; }
+.kv-row{
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--parchment-line);
+}
+.kv-row:last-child{ border-bottom: 0; }
+.kv dt{
+  margin: 0;
+  color: var(--ink-muted);
+  font-weight: 600;
+}
+.kv dd{
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* ------ Ricorrenza “cartiglio” ------------------------------------------- */
+.ricorrenza-pill{
+  display: inline-block;
+  background: #f3ebde;
+  border: 2px solid #e0d0b3;
+  color: var(--ink);
+  padding: 10px 14px;
+  border-radius: 999px / 28px; /* ovale morbido */
+  font-weight: 800;
+  letter-spacing: .01em;
+}
+
+/* ------ Letture: riquadri sobri, padding aumentato ----------------------- */
+.reading-card{
+  padding: 14px 16px;
+  border: 1px solid var(--parchment-line);
+  border-radius: 12px;
+  background: linear-gradient(180deg,#fffdf9, #fbf5e8);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.6);
+}
+.reading-card + .reading-card{ margin-top: 12px; }
+
+.r-title{
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: .04em;
+  margin: 0 0 4px;
+}
+.r-ref{ color: var(--ink-muted); font-weight: 600; margin-left: .5ch; }
+.r-text{ margin: 6px 0 0; line-height: 1.55; }
+
+/* togliamo iconcine laterali (se restassero nel DOM) */
+.reading-card ion-icon[slot="end"]{ display: none !important; }
+
+/* ------ Santi: titolo elegante con iniziale rossa ------------------------ */
+.saint-title{
+  font-family: var(--font-display);
+  font-size: 1.22rem;
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+.saint-title .capo{
+  color: var(--wine);
+  font-size: 1.6em;
+  line-height: .8;
+  margin-right: .12em;
+}
+
+/* ------ Natura & Campi: timeline con titoletti visibili ------------------ */
+.n-table{
+  border: 1px solid var(--parchment-line);
+  border-radius: 18px;
+  background: #fffdf8;
+  padding: 14px 16px;
+}
+.n-table .rail{
+  width: 4px; background: #e9dcc3; border-radius: 999px; margin-right: 12px;
+}
+.n-row{
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 12px;
+}
+.n-item{
+  padding: 10px 2px 14px;
+  border-bottom: 1px dashed var(--parchment-line);
+}
+.n-item:last-child{ border-bottom: 0; }
+.n-head{
+  font-family: var(--font-display);
+  font-variant-caps: small-caps;
+  letter-spacing: .12em;
+  font-weight: 700;
+  color: var(--ink);            /* più visibile */
+  background: #e7efe9;         /* badge pieno, ma tenue */
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.n-body{
+  margin-top: 8px;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ------ Chip colore liturgico (se usato) --------------------------------- */
+.chip-liturgical{
+  --background: #efe9d6;
+  --color: var(--ink);
+  border: 1px solid var(--parchment-line);
+  height: 30px;
+}
+.chip-liturgical.lit-verde  { --background:#e6f2ea; --color:#1f4a2f; }
+.chip-liturgical.lit-bianco { --background:#ffffff; --color:#2e2a23; }
+.chip-liturgical.lit-rosso  { --background:#fde6e6; --color:#7b1010; }
+.chip-liturgical.lit-viola  { --background:#efe6fa; --color:#45286f; }
+.chip-liturgical.lit-rosa   { --background:#ffe9f0; --color:#8f2856; }
+.chip-liturgical.lit-neutro { --background:#efe9d6; --color:var(--ink); }
+
+/* ------ Bottoni outline “pellegrino” ------------------------------------- */
+.btn-outline{
+  --background: transparent;
+  --border-color: #c8d6ff;
+  --color: #1741d3;
+  border: 1.5px solid var(--border-color);
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-weight: 700;
+}
+
+/* ------ Stato errore ----------------------------------------------------- */
+ion-note[color="danger"]{
+  background:#fff2f1; border:1px solid #f3b7b2; color:#731b1b;
+  padding: 6px 10px; border-radius: 8px;
+}
+
+/* ------ Responsive ------------------------------------------------------- */
+@media (max-width: 380px){
+  .kv-row{ grid-template-columns: 120px 1fr; }
 }
