@@ -63,12 +63,21 @@ getNatura(date: string) {
 }
 
 
+getProverbio(date: string) {
+  return this.http
+    .get<any>(`${BASE}/proverbio.php`, { params: this.params({ date }) })
+    .pipe(
+      map(p => {
+        if (!p) return null;
+        return {
+          testo: (p.testo ?? p.proverbio ?? null) as string | null,
+          citazione: (p.citazione ?? null) as string | null,
+          consiglio: (p.consiglio ?? null) as string | null,
+          date: p.date ?? date
+        };
+      })
+    );
+}
 
-  getProverbio(date: string) {
-    return this.http.get<Proverbio | null>(`${BASE}/proverbio.php`, { params: this.params({ date }) });
-  }
 
-  getOnomastici(date: string) {
-    return this.http.get<Onomastico[] | null>(`${BASE}/onomastici.php`, { params: this.params({ date }) });
-  }
 }

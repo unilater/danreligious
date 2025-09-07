@@ -7,7 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { forkJoin, of, catchError } from 'rxjs';
 
 import { AlmanaccoService } from '../../services/almanacco.service';
-import { Liturgia, Lettura, Natura, Proverbio, Santo, Onomastico } from '../../models/almanacco.models';
+import { Liturgia, Lettura, Natura, Proverbio, Santo } from '../../models/almanacco.models';
 
 import localeIt from '@angular/common/locales/it';
 registerLocaleData(localeIt);
@@ -29,13 +29,8 @@ export class LiturgiaPage implements OnInit {
   santi: Santo[] = [];
   natura: Natura | null = null;
   proverbio: Proverbio | null = null;
-  onomastici: Onomastico[] | null = null;
 
   private failed: string[] = [];
-
-  get onomasticiDisplay(): string {
-    return (this.onomastici ?? []).map(o => o.nome).join(', ');
-  }
 
   constructor(private api: AlmanaccoService, private route: ActivatedRoute) {}
 
@@ -62,19 +57,17 @@ export class LiturgiaPage implements OnInit {
     this.failed = [];
 
     forkJoin({
-      liturgia:   this.api.getLiturgia(date).pipe(catchError(err => this.markFail('liturgia', err))),
-      santi:      this.api.getSanti(date).pipe(catchError(err => this.markFail('santi', err))),
-      natura:     this.api.getNatura(date).pipe(catchError(err => this.markFail('natura', err))),
-      proverbio:  this.api.getProverbio(date).pipe(catchError(err => this.markFail('proverbio', err))),
-      onomastici: this.api.getOnomastici(date).pipe(catchError(err => this.markFail('onomastici', err)))
+      liturgia:  this.api.getLiturgia(date).pipe(catchError(err => this.markFail('liturgia', err))),
+      santi:     this.api.getSanti(date).pipe(catchError(err => this.markFail('santi', err))),
+      natura:    this.api.getNatura(date).pipe(catchError(err => this.markFail('natura', err))),
+      proverbio: this.api.getProverbio(date).pipe(catchError(err => this.markFail('proverbio', err)))
     })
     .subscribe({
       next: d => {
-        this.liturgia   = d.liturgia ?? null;
-        this.santi      = (d.santi ?? []).slice(0, 2);
-        this.natura     = d.natura ?? null;
-        this.proverbio  = d.proverbio ?? null;
-        this.onomastici = d.onomastici ?? [];
+        this.liturgia  = d.liturgia ?? null;
+        this.santi     = (d.santi ?? []).slice(0, 2);
+        this.natura    = d.natura ?? null;
+        this.proverbio = d.proverbio ?? null;
 
         if (this.failed.length) this.error = `Dati mancanti: ${this.failed.join(', ')}`;
         this.loading = false;

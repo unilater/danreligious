@@ -1,106 +1,84 @@
+/* -------------------- CARD “PERGAMENA” -------------------- */
 ion-card.card-vintage,
 ion-card {
-  background: linear-gradient(180deg, #fffdf7, var(--parchment));
+  background: linear-gradient(180deg, #fffdf8, var(--parchment));
   border: 1px solid var(--parchment-line);
   border-radius: 14px;
   box-shadow: 0 2px 0 rgba(0,0,0,.06), 0 10px 20px rgba(0,0,0,.04);
   overflow: hidden;
+  margin-inline: 12px;
 }
 
+/* -------------------- TITOLI SEZIONE ---------------------- */
 ion-card-header {
   position: relative;
   padding-bottom: 10px;
+}
 
-  ion-card-title {
-    font-family: "IM Fell English SC", "Cardo", serif;
-    font-size: 1.2rem;
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
+ion-card-title.section-title {
+  font-family: "IM Fell English SC", "Cardo", serif;
+  font-size: 1.22rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
 
-    &::after {
-      content: "";
-      flex: 1 1 auto;
-      height: 1px;
-      background: linear-gradient(90deg, var(--parchment-line), transparent);
-      margin-left: .6rem;
-      opacity: .8;
-    }
+  &::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: linear-gradient(90deg, var(--parchment-line), transparent);
+    margin-left: .6rem;
+    opacity: .8;
+  }
+
+  ion-icon {
+    font-size: 1.25rem;
+    opacity: .95;
   }
 }
 
-/* chip liturgico */
+/* -------------------- CHIP LITURGICO ---------------------- */
+/* base */
 ion-chip.chip-liturgical {
-  --background: #f0ead9;
+  --background: #efe9d6;
   --color: var(--vintage-ink);
   border: 1px solid var(--parchment-line);
   box-shadow: 0 1px 0 rgba(0,0,0,.06);
+  height: 28px;
 }
 
-/* lista neutra (se la usi) */
+/* varianti: allineate a litColorClass() => lit-verde, lit-bianco, ... */
+ion-chip.chip-liturgical.lit-verde  { --background: #e2f2e4; --color:#154f1b; border-color:#bfe5c3; }
+ion-chip.chip-liturgical.lit-bianco { --background: #ffffff; --color:#2e2a23; border-color:#e7e0c8; }
+ion-chip.chip-liturgical.lit-rosso  { --background: #fde6e6; --color:#7b1010; border-color:#f3caca; }
+ion-chip.chip-liturgical.lit-viola  { --background: #efe6fa; --color:#45286f; border-color:#dccbf6; }
+ion-chip.chip-liturgical.lit-rosa   { --background: #ffe9f0; --color:#8f2856; border-color:#ffcfe0; }
+ion-chip.chip-liturgical.lit-neutro { --background: #efe9d6; --color: var(--monk-ink); }
+
+/* -------------------- LISTE NEUTRE ------------------------ */
 .list-plain {
   --ion-item-background: transparent;
   --ion-item-border-color: var(--parchment-line);
 }
 
-/* item elenco letture */
+/* Letture */
 ion-item.reading {
   --background: transparent;
   border-bottom: 1px dashed var(--parchment-line);
 
-  ion-icon {
-    opacity: .7;
-  }
-  ion-label div:first-child { /* tipo */
-    letter-spacing: .02em;
-  }
-  ion-label div:nth-child(2) { /* riferimento */
-    opacity: .75;
-  }
+  ion-icon { opacity: .8; font-size: 1.15rem; }
+  ion-label div:first-child { letter-spacing: .02em; }  /* tipo */
+  ion-label div:nth-child(2) { opacity: .7; }           /* riferimento */
 }
 
-/* Collegamenti rapidi - stile "pulsantoni morbidi" */
-ion-card .quick-links,
-ion-card ion-list {
-  background: transparent;
-}
-
-ion-item[button] {
-  --background: transparent;
-  border: 1px solid var(--parchment-line);
-  border-radius: 12px;
-  margin: 6px 0;
-  transition: transform .08s ease, box-shadow .12s ease;
-
-  &:active {
-    transform: translateY(1px);
-    box-shadow: inset 0 2px 6px rgba(0,0,0,.06);
-  }
-}
-
-/* icone più "da stampa" */
-ion-icon {
-  font-size: 1.1rem;
-  opacity: .9;
-}
-
-/* nota in evidenza (errori ecc) */
-ion-note[color="danger"] {
-  background: #fff3f2;
-  border: 1px solid #f3c1bc;
-  padding: 6px 10px;
-  border-radius: 8px;
-}
-
-
-/* key-value layout per info liturgiche */
+/* -------------------- KV (INFO LITURGICHE) ---------------- */
 .kv { margin: 6px 0 10px; }
 .kv-row {
   display: grid;
   grid-template-columns: 120px 1fr;
   gap: .75rem;
   align-items: baseline;
-  padding: 2px 0;
+  padding: 3px 0;
   border-bottom: 1px dashed var(--parchment-line);
 }
 .kv-row:last-child { border-bottom: 0; }
@@ -111,52 +89,23 @@ ion-note[color="danger"] {
   letter-spacing: .06em;
   font-weight: 700;
   color: var(--vintage-ink);
-  opacity: .8;
+  opacity: .85;
 }
-.kv dd {
-  margin: 0;
-  font-weight: 600;
-}
+.kv dd { margin: 0; font-weight: 600; }
 .kv dd.tempo { font-weight: 800; }
 
-/* pill per la ricorrenza */
+/* “pill” per ricorrenza */
 .pill {
   display: inline-block;
   padding: 2px 8px;
   border-radius: 999px;
-  background: #f5efe0;
+  background: #f7efe6;
   border: 1px solid var(--parchment-line);
 }
-.pill.festa { background: #f7efe6; }
 
-/* chip liturgico con varianti colore */
-ion-chip.chip-liturgical {
-  --background: #efe9d6;
-  --color: var(--vintage-ink);
-  border: 1px solid var(--parchment-line);
-  box-shadow: 0 1px 0 rgba(0,0,0,.06);
-}
+/* -------------------- SANTI DEL GIORNO -------------------- */
+.santi-card { margin-top: 8px; }
 
-/* varianti reali */
-.chip-liturgical.verde  { --background: #e5f3e6; --color:#155b1a; border-color:#c7e8ca; }
-.chip-liturgical.bianco { --background: #ffffff; --color:#2e2a23; border-color:#e7e0c8; }
-.chip-liturgical.rosso  { --background: #fde6e6; --color:#8a1212; border-color:#f6cccc; }
-.chip-liturgical.viola  { --background: #efe6fa; --color:#4d2a7a; border-color:#decdf7; }
-.chip-liturgical.rosa   { --background: #ffe9f0; --color:#a12c61; border-color:#ffd3e3; }
-.chip-liturgical.neutro { --background: #efe9d6; --color: var(--vintage-ink); }
-
-/* letture */
-.lettura-tipo { letter-spacing: .02em; }
-.muted { opacity: .75; }
-.lettura-snippet { margin-top: 6px; line-height: 1.45; }
-
-/* --- Santi del giorno --------------------------------------------------- */
-/* --- Santi del giorno --------------------------------------------------- */
-.santi-card {
-  margin-top: 8px; /* o qualsiasi valore utile, così non è vuoto */
-}
-
-/* item pergamena “cartiglio” */
 .saint-item {
   --background: transparent;
   --padding-start: 10px;
@@ -175,38 +124,25 @@ ion-chip.chip-liturgical {
 
 /* medaglione emoji */
 .emoji-circle {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 18px;
-  line-height: 1;
+  width: 34px; height: 34px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 18px; line-height: 1;
   background: #fffdf7;
   border: 1px solid var(--parchment-line);
   box-shadow: 0 1px 0 rgba(0,0,0,.06);
   margin-right: 6px;
 }
-.emoji-fallback {
-  opacity: .8;
-  font-size: 1.1rem;
-}
+.emoji-fallback { opacity: .8; font-size: 1.1rem; }
 
-/* testi */
+/* testi santi */
 .saint-title {
   font-family: "IM Fell English SC", "Cardo", serif;
-  font-size: 1.02rem;
+  font-size: 1.04rem;
   letter-spacing: .01em;
   color: var(--vintage-ink);
 }
-.saint-sub {
-  margin-top: 2px;
-  font-size: .92rem;
-  opacity: .75;
-}
-.saint-meta {
-  margin-top: 6px;
-}
+.saint-sub { margin-top: 2px; font-size: .92rem; opacity: .75; }
+.saint-meta { margin-top: 6px; }
 .pill.patrono {
   background: #eef6ff;
   border: 1px solid #cfe5ff;
@@ -216,60 +152,16 @@ ion-chip.chip-liturgical {
   font-size: .82rem;
 }
 
-/* snippet con line-clamp */
-.saint-snippet {
-  margin: 6px 0 0;
-  line-height: 1.45;
-  opacity: .95;
-}
+.saint-snippet { margin: 6px 0 0; line-height: 1.45; opacity: .95; }
 .clamp-2 {
-  /* standard */
   line-clamp: 2;
-
-  /* vendor (Safari/Chromium vecchi) */
   -webkit-line-clamp: 2;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-
   overflow: hidden;
 }
 
-
-
-.mini-table {
-  --ion-item-background: transparent;
-
-  ion-item {
-    border: 1px solid var(--parchment-line);
-    border-radius: 12px;
-    margin: 6px 0;
-
-    ion-label { font-weight: 600; }
-    ion-note { opacity: .85; }
-  }
-}
-
-
-/* ---------------- Palette monastica accessibile ---------------- */
-:root {
-  --monk-ink:        #1f1b17;
-  --monk-sage:       #2f5a3a;
-  --monk-olive:      #5b6b3f;
-  --monk-wine:       #6f2b2b;
-  --monk-gold:       #b4882a;
-  --monk-blue:       #2b4a6f;
-  --monk-brown:      #6c4a2f;
-
-  --badge-border:    var(--parchment-line);
-  --value-color:     #4b453c;
-}
-
-/* testo più leggibile sullo sfondo pergamena */
-.parchment-body, ion-content {
-  --ion-text-color: var(--monk-ink);
-}
-
-/* ---------- Natura & Campi (mini-table) ---------- */
+/* -------------------- NATURA & CAMPI ---------------------- */
 .mini-table {
   --ion-item-background: transparent;
 
@@ -281,83 +173,105 @@ ion-chip.chip-liturgical {
     --padding-end: 10px;
     align-items: center;
 
-    /* icona in badge tondo */
     ion-icon[slot="start"] {
       width: 28px; height: 28px;
       border-radius: 999px;
       display: grid; place-items: center;
       padding: 6px;
-      border: 1px solid var(--badge-border);
+      border: 1px solid var(--badge-border, var(--parchment-line));
       background: #fffdf8;
       margin-right: 8px;
-      /* colore default, poi sovrascritto per item-xxx */
-      color: var(--monk-olive);
+      color: var(--monk-olive, #5b6b3f);
     }
 
-    /* label non va a capo (niente "Or-to") */
     ion-label {
       font-weight: 700;
       white-space: nowrap;
-      min-width: 7ch;     /* tiene una parola corta su una riga */
+      min-width: 7ch;
       margin-right: 6px;
     }
 
-    /* valore a destra, ellissi se lungo */
     .value {
       max-width: 70%;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      color: var(--value-color);
+      color: var(--value-color, #4b453c);
       opacity: .95;
       font-weight: 500;
     }
   }
 
-  /* colori "monastici" per badge icona */
-  .item-orto ion-icon[slot="start"]     { color: var(--monk-sage);  background: #eaf3ea; }
-  .item-giardino ion-icon[slot="start"] { color: #35614a;           background: #eaf5ef; }
-  .item-piante ion-icon[slot="start"]   { color: var(--monk-brown); background: #f6efe7; }
-  .item-cucina ion-icon[slot="start"]   { color: var(--monk-gold);  background: #f8f1e2; }
-  .item-luna ion-icon[slot="start"]     { color: var(--monk-blue);  background: #edf3fa; }
-  .item-alba ion-icon[slot="start"]     { color: #b76e00;           background: #fdf3e2; }
-  .item-tramonto ion-icon[slot="start"] { color: #a34b2b;           background: #fceee9; }
+  .item-orto ion-icon[slot="start"]     { color: var(--monk-sage, #2f5a3a);  background: #eaf3ea; }
+  .item-giardino ion-icon[slot="start"] { color: #35614a;                    background: #eaf5ef; }
+  .item-piante ion-icon[slot="start"]   { color: var(--monk-brown, #6c4a2f); background: #f6efe7; }
+  .item-cucina ion-icon[slot="start"]   { color: var(--monk-gold, #b4882a);  background: #f8f1e2; }
+  .item-luna ion-icon[slot="start"]     { color: var(--monk-blue, #2b4a6f);  background: #edf3fa; }
+  .item-alba ion-icon[slot="start"]     { color: #b76e00;                    background: #fdf3e2; }
+  .item-tramonto ion-icon[slot="start"] { color: #a34b2b;                    background: #fceee9; }
 }
 
-/* ---------- Ritocchi generali “vintage” ---------- */
-ion-card.card-vintage,
-ion-card {
-  background: linear-gradient(180deg, #fffdf7, var(--parchment));
-  border: 1px solid var(--parchment-line);
-  border-radius: 14px;
-  box-shadow: 0 2px 0 rgba(0,0,0,.06), 0 10px 20px rgba(0,0,0,.04);
-  overflow: hidden;
+/* -------------------- CITAZIONE & PROVERBIO --------------- */
+.monk-tip {
+  margin: 0;
+  line-height: 1.55;
+  font-weight: 600;
+  font-size: 1.01rem;
+  position: relative;
+  padding-left: 12px;
+}
+.monk-tip::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0.15em; bottom: 0.15em;
+  width: 3px;
+  border-radius: 6px;
+  background: var(--accent-1);
+  opacity: .35;
 }
 
-ion-card-header ion-card-title.section-title {
+.quote-wrap { margin: 0 0 8px; }
+.quote {
+  margin: 0;
+  font-style: italic;
+  line-height: 1.6;
+  position: relative;
+  padding: 6px 2px 6px 0;
+}
+.quote::before, .quote::after {
+  position: absolute;
   font-family: "IM Fell English SC", "Cardo", serif;
-  font-size: 1.18rem;
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
+  font-size: 1.4rem;
+  opacity: .3;
+}
+.quote::before { content: "“"; left: -2px; top: -2px; }
+.quote::after  { content: "”"; right: -2px; bottom: -8px; }
+
+.quote-cap {
+  margin-top: 2px;
+  opacity: .6;
+  font-size: .9rem;
 }
 
-.lettura-snippet,
-.saint-snippet {
-  line-height: 1.5;
+.proverbio ion-icon {
+  margin-right: 6px;
+  opacity: .8;
 }
 
-/* chip liturgici (già presenti – qui solo contrasto leggermente più alto) */
-.chip-liturgical.verde  { --background: #e2f2e4; --color:#154f1b; border-color:#bfe5c3; }
-.chip-liturgical.bianco { --background: #ffffff; --color:#2e2a23; border-color:#e7e0c8; }
-.chip-liturgical.rosso  { --background: #fde6e6; --color:#7b1010; border-color:#f3caca; }
-.chip-liturgical.viola  { --background: #efe6fa; --color:#45286f; border-color:#dccbf6; }
-.chip-liturgical.rosa   { --background: #ffe9f0; --color:#8f2856; border-color:#ffcfe0; }
-.chip-liturgical.neutro { --background: #efe9d6; --color: var(--monk-ink); }
+/* -------------------- ICONE GLOBALI ----------------------- */
+ion-icon { font-size: 1.12rem; opacity: .92; }
 
-/* accessibilità: stato errore ben leggibile */
+/* -------------------- ERROR NOTE -------------------------- */
 ion-note[color="danger"] {
   background: #fff2f1;
   border: 1px solid #f3b7b2;
   color: #731b1b;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+/* -------------------- RESPONSIVE MINOR -------------------- */
+@media (max-width: 360px) {
+  ion-card { margin-inline: 8px; }
+  .kv-row { grid-template-columns: 102px 1fr; }
 }

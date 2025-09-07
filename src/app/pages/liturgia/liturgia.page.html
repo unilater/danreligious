@@ -11,9 +11,7 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content class="parchment-body" [fullscreen]="true">
-  <!-- Contenuto principale -->
   <ng-container *ngIf="!loading && !error; else stateTpl">
 
     <!-- Liturgia -->
@@ -83,18 +81,15 @@
             *ngFor="let s of (santi | slice:0:2); trackBy: trackBySanto"
             [routerLink]="['/santo', date, s.id]"
           >
-            <!-- Medaglione emoji -->
             <div class="emoji-circle" slot="start" *ngIf="s.emoji">{{ s.emoji }}</div>
             <ion-icon *ngIf="!s.emoji" slot="start" name="sparkles-outline" class="emoji-fallback" aria-hidden="true"></ion-icon>
 
             <ion-label>
               <div class="saint-title">{{ s.titolo }}</div>
               <div class="saint-sub" *ngIf="s.sottotitolo">{{ s.sottotitolo }}</div>
-
               <div class="saint-meta">
                 <span class="pill patrono" *ngIf="s.patronato">Patrono: {{ s.patronato }}</span>
               </div>
-
               <p class="saint-snippet clamp-2" *ngIf="s.snippet">{{ s.snippet }}</p>
             </ion-label>
 
@@ -167,23 +162,19 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- Onomastici & Proverbio -->
-    <ion-card class="card-vintage">
+    <!-- Proverbio del giorno (senza onomastici) -->
+    <ion-card class="card-vintage" *ngIf="proverbio as pro">
+      <ion-card-header>
+        <ion-card-title class="section-title">
+          <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+          Proverbio del giorno
+        </ion-card-title>
+      </ion-card-header>
       <ion-card-content>
-        <ng-container *ngIf="onomastici as ono">
-          <div class="onomastici" *ngIf="ono.length">
-            <ion-icon name="ribbon-outline" aria-hidden="true"></ion-icon>
-            <span> Onomastici: </span>
-            <strong>{{ onomasticiDisplay }}</strong>
-          </div>
-        </ng-container>
-
-        <ng-container *ngIf="proverbio as pro">
-          <div class="proverbio" *ngIf="pro.testo">
-            <ion-icon name="chatbubble-ellipses-outline" aria-hidden="true"></ion-icon>
-            <em>«{{ pro.testo }}»</em>
-          </div>
-        </ng-container>
+        <div class="proverbio" *ngIf="pro.testo">
+          <ion-icon name="ribbon-outline" aria-hidden="true"></ion-icon>
+          <em>«{{ pro.testo }}»</em>
+        </div>
       </ion-card-content>
     </ion-card>
 

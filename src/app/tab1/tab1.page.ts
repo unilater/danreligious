@@ -6,11 +6,9 @@ import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { HttpClientModule } from '@angular/common/http';
 import { forkJoin, of, catchError } from 'rxjs';
-// Se la tua versione di RxJS non esporta catchError da 'rxjs', usa:
-// import { catchError } from 'rxjs/operators';
 
 import { AlmanaccoService } from '../services/almanacco.service';
-import { Liturgia, Lettura, Natura, Proverbio, Santo, Onomastico } from '../models/almanacco.models';
+import { Liturgia, Lettura, Natura, Proverbio, Santo } from '../models/almanacco.models';
 
 import localeIt from '@angular/common/locales/it';
 registerLocaleData(localeIt);
@@ -27,17 +25,17 @@ export class Tab1Page implements OnInit {
   loading = true;
   error: string | null = null;
 
+  // dati
   liturgia: (Liturgia & { letture: Lettura[] }) | null = null;
   santi: Santo[] = [];
   natura: Natura | null = null;
-  proverbio: Proverbio | null = null;
-  onomastici: Onomastico[] | null = null;
+
+  // proverbio esteso (testo + campi extra dal nuovo endpoint)
+  proverbio: (Proverbio & { citazione?: string | null; consiglio?: string | null }) | null = null;
+  citazione: string | null = null;
+  consiglioMonaco: string | null = null;
 
   private failed: string[] = [];
-
-  get onomasticiDisplay(): string {
-    return (this.onomastici ?? []).map(o => o.nome).join(', ');
-  }
 
   constructor(private api: AlmanaccoService) {}
 
@@ -58,19 +56,32 @@ export class Tab1Page implements OnInit {
     this.failed = [];
 
     forkJoin({
-      liturgia:   this.api.getLiturgia(date).pipe(catchError(err => this.markFail('liturgia', err))),
-      santi:      this.api.getSanti(date).pipe(catchError(err => this.markFail('santi', err))),
-      natura:     this.api.getNatura(date).pipe(catchError(err => this.markFail('natura', err))),
-      proverbio:  this.api.getProverbio(date).pipe(catchError(err => this.markFail('proverbio', err))),
-      onomastici: this.api.getOnomastici(date).pipe(catchError(err => this.markFail('onomastici', err)))
+      liturgia:  this.api.getLiturgia(date).pipe(catchError(err => this.markFail('liturgia', err))),
+      santi:     this.api.getSanti(date).pipe(catchError(err => this.markFail('santi', err))),
+      natura:    this.api.getNatura(date).pipe(catchError(err => this.markFail('natura', err))),
+      proverbio: this.api.getProverbio(date).pipe(catchError(err => this.markFail('proverbio', err)))
     })
     .subscribe({
       next: d => {
-        this.liturgia   = d.liturgia ?? null;
-        this.santi      = (d.santi ?? []).slice(0, 2);   // mostra al massimo 2 santi in home
-        this.natura     = d.natura ?? null;
-        this.proverbio  = d.proverbio ?? null;
-        this.onomastici = d.onomastici ?? [];
+        this.liturgia = d.liturgia ?? null;
+        this.santi    = (d.santi ?? []).slice(0, 2); // max 2 in home
+        this.natura   = d.natura ?? null;
+
+        // normalizza il proverbio (supporta endpoint esteso: testo/citazione/consiglio)
+        const pro: any = d.proverbio ?? null;
+        if (pro && (pro.testo || pro.proverbio)) {
+          this.proverbio = {
+            testo: pro.testo ?? pro.proverbio ?? null,
+            citazione: pro.citazione ?? null,
+            consiglio: pro.consiglio ?? null
+          };
+          this.citazione = this.proverbio.citazione ?? null;
+          this.consiglioMonaco = this.proverbio.consiglio ?? null;
+        } else {
+          this.proverbio = null;
+          this.citazione = null;
+          this.consiglioMonaco = null;
+        }
 
         if (this.failed.length) {
           this.error = `Dati mancanti: ${this.failed.join(', ')}`;
