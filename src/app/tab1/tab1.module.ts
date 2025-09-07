@@ -1,20 +1,22 @@
 import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';   // *ngIf, *ngFor
 import { FormsModule } from '@angular/forms';
-import { Tab1Page } from './tab1.page';
-import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 import { Tab1PageRoutingModule } from './tab1-routing.module';
+import { Tab1Page } from './tab1.page';
 
 @NgModule({
   imports: [
-    IonicModule,
+    IonicModule,          // componenti Ion (ion-note, ion-card, ecc.)
     CommonModule,
     FormsModule,
-    ExploreContainerComponentModule,
+    HttpClientModule,
+    RouterModule,
     Tab1PageRoutingModule
   ],
-  declarations: [Tab1Page]
+  declarations: [Tab1Page]  // ⬅️ DICHIARATO (non importato)
 })
 export class Tab1PageModule {}

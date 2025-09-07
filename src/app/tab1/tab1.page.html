@@ -1,17 +1,143 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-title>Almanacco del Monaco</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <!-- Contenuto principale -->
+  <ng-container *ngIf="!loading && !error; else stateTpl">
+
+    <!-- Liturgia di oggi -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Liturgia di oggi</ion-card-title>
+        <ng-container *ngIf="liturgia as lit">
+          <ion-chip *ngIf="lit.color_label" [color]="lit.color_key || 'medium'">
+            <ion-label>{{ lit.color_label }}</ion-label>
+          </ion-chip>
+        </ng-container>
+      </ion-card-header>
+
+      <ion-card-content *ngIf="liturgia as lit">
+        <div>Tempo: <strong>{{ lit.season }}</strong></div>
+        <div *ngIf="lit.week">Settimana: <strong>{{ lit.week }}</strong></div>
+        <div *ngIf="lit.festa">Ricorrenza: <strong>{{ lit.festa }}</strong></div>
+
+        <ion-list *ngIf="lit.letture?.length">
+          <ion-item lines="none" *ngFor="let l of (lit.letture | slice:0:3)">
+            <ion-icon name="bookmark-outline" slot="start"></ion-icon>
+            <ion-label>
+              <div><strong>{{ l.tipo }}</strong></div>
+              <div style="opacity:.8">{{ l.riferimento }}</div>
+              <div *ngIf="l.snippet" style="margin-top:6px">{{ l.snippet }}</div>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+
+       
+          <ion-button size="small" fill="outline" [routerLink]="['/messa', today]">
+          Vai al dettaglio letture
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Santo del giorno -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Santo del giorno</ion-card-title>
+      </ion-card-header>
+      <ion-card-content *ngIf="santo as san">
+        <div>
+          <span *ngIf="san.emoji">{{ san.emoji }} </span>{{ san.titolo }}
+        </div>
+        <div *ngIf="san.sottotitolo" style="opacity:.8">{{ san.sottotitolo }}</div>
+        <p *ngIf="san.snippet" style="margin-top:8px">{{ san.snippet }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Natura & Campi -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Natura & Campi</ion-card-title>
+      </ion-card-header>
+      <ion-card-content *ngIf="natura as nat">
+        <ion-list>
+          <ion-item lines="none">
+            <ion-icon slot="start" name="sunny-outline"></ion-icon>
+            <ion-label>Alba</ion-label>
+            <ion-note slot="end">{{ nat.alba || '—' }}</ion-note>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-icon slot="start" name="sunset-outline"></ion-icon>
+            <ion-label>Tramonto</ion-label>
+            <ion-note slot="end">{{ nat.tramonto || '—' }}</ion-note>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-icon slot="start" name="planet-outline"></ion-icon>
+            <ion-label>Luna</ion-label>
+            <ion-note slot="end">{{ nat.luna_emoji }} {{ nat.luna_fase || '—' }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Collegamenti rapidi -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Consigli del Monaco</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item button detail routerLink="/tabs/tab2">
+            <ion-icon slot="start" name="compass-outline"></ion-icon>
+            <ion-label>Consigli</ion-label>
+            <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+          </ion-item>
+          <ion-item button detail routerLink="/tabs/tab3">
+            <ion-icon slot="start" name="leaf-outline"></ion-icon>
+            <ion-label>Erbe</ion-label>
+            <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+          </ion-item>
+          <ion-item button detail routerLink="/tabs/tab4">
+            <ion-icon slot="start" name="restaurant-outline"></ion-icon>
+            <ion-label>Cucina</ion-label>
+            <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Onomastici & Proverbio -->
+    <ion-card>
+      <ion-card-content>
+        <ng-container *ngIf="onomastici as ono">
+          <div *ngIf="ono.length">
+            <ion-icon name="ribbon-outline"></ion-icon>
+            <span> Onomastici: </span>
+            <strong>{{ onomasticiDisplay }}</strong>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="proverbio as pro">
+          <div *ngIf="pro.testo" style="margin-top:8px">
+            <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+            <em>«{{ pro.testo }}»</em>
+          </div>
+        </ng-container>
+      </ion-card-content>
+    </ion-card>
+
+  </ng-container>
+
+  <!-- Stati: loading / errore -->
+  <ng-template #stateTpl>
+    <div style="display:grid;place-items:center;padding:24px;text-align:center">
+      <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+      <ion-note color="danger" *ngIf="error">{{ error }}</ion-note>
+    </div>
+  </ng-template>
+
 </ion-content>
