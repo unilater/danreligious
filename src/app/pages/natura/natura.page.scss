@@ -129,17 +129,17 @@ ion-note[color="danger"] {
 }
 
 ::ng-deep .prose {
-  font-size: 1.35rem;                /* ancora più grande */
+  
   line-height: 1.9;                  /* molto arioso */
   color: #1a1a1a;                    /* quasi nero per contrasto massimo */
   max-width: 72ch;                   /* leggibilità ottimale */
   margin: 0 auto;
-  letter-spacing: .012em;
+  
 }
 
 ::ng-deep .prose p {
   margin: 1.1rem 0;                  /* più spazio tra paragrafi */
-  font-size: 1.25rem;
+  font-size: 1.1rem;
 }
 
 /* Titoli principali */
