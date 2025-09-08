@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { HttpClientModule } from '@angular/common/http';
-import { forkJoin, of, catchError } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { AlmanaccoService } from '../../services/almanacco.service';
 import { Liturgia, Lettura, Natura, Proverbio, Santo } from '../../models/almanacco.models';
@@ -15,7 +15,7 @@ registerLocaleData(localeIt);
 @Component({
   selector: 'app-liturgia',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, IonicModule, HttpClientModule],
+  imports: [CommonModule, RouterModule, IonicModule, HttpClientModule],
   templateUrl: './liturgia.page.html',
   styleUrls: ['./liturgia.page.scss']
 })
@@ -28,11 +28,14 @@ export class LiturgiaPage implements OnInit {
   liturgia: (Liturgia & { letture: Lettura[] }) | null = null;
   santi: Santo[] = [];
   natura: Natura | null = null;
-  proverbio: Proverbio | null = null;
+  proverbio: (Proverbio & { citazione?: string | null; consiglio?: string | null }) | null = null;
 
   private failed: string[] = [];
 
-  constructor(private api: AlmanaccoService, private route: ActivatedRoute) {}
+  constructor(
+    private api: AlmanaccoService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     const param = this.route.snapshot.paramMap.get('date');
@@ -61,15 +64,27 @@ export class LiturgiaPage implements OnInit {
       santi:     this.api.getSanti(date).pipe(catchError(err => this.markFail('santi', err))),
       natura:    this.api.getNatura(date).pipe(catchError(err => this.markFail('natura', err))),
       proverbio: this.api.getProverbio(date).pipe(catchError(err => this.markFail('proverbio', err)))
-    })
-    .subscribe({
+    }).subscribe({
       next: d => {
         this.liturgia  = d.liturgia ?? null;
         this.santi     = (d.santi ?? []).slice(0, 2);
         this.natura    = d.natura ?? null;
-        this.proverbio = d.proverbio ?? null;
 
-        if (this.failed.length) this.error = `Dati mancanti: ${this.failed.join(', ')}`;
+        // normalizza il proverbio come in Tab1
+        const pro: any = d.proverbio ?? null;
+        if (pro && (pro.testo || pro.proverbio)) {
+          this.proverbio = {
+            testo: pro.testo ?? pro.proverbio ?? null,
+            citazione: pro.citazione ?? null,
+            consiglio: pro.consiglio ?? null
+          };
+        } else {
+          this.proverbio = null;
+        }
+
+        if (this.failed.length) {
+          this.error = `Dati mancanti: ${this.failed.join(', ')}`;
+        }
         this.loading = false;
       },
       error: e => {
@@ -82,7 +97,7 @@ export class LiturgiaPage implements OnInit {
 
   /** Classe CSS per colore liturgico */
   litColorClass(l?: { color_key?: string; color_label?: string }): string {
-    if (!l) return 'neutro';
+    if (!l) return 'lit-neutro';
     const txt = `${l.color_key ?? ''} ${l.color_label ?? ''}`.toLowerCase();
     if (txt.includes('verde') || txt.includes('green'))  return 'lit-verde';
     if (txt.includes('bianco') || txt.includes('white')) return 'lit-bianco';

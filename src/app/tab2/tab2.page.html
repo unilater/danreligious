@@ -6,13 +6,14 @@
     </ion-title>
 
     <ion-buttons slot="end">
-      <ion-button (click)="prevWeek()" aria-label="Settimana precedente">
+      <!-- Settimana precedente disabilitata -->
+      <ion-button (click)="prevWeek()" [disabled]="true" aria-label="Settimana precedente">
         <ion-icon name="chevron-back-outline"></ion-icon>
       </ion-button>
       <ion-button (click)="thisWeek()" aria-label="Torna a questa settimana">
         OGGI
       </ion-button>
-      <ion-button (click)="nextWeek()" aria-label="Settimana successiva">
+      <ion-button (click)="nextWeek()" [disabled]="mondayIso >= maxWeek" aria-label="Settimana successiva">
         <ion-icon name="chevron-forward-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -21,9 +22,9 @@
   <ion-toolbar class="sub">
     <ion-title size="small">
       <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
-      {{ mondayIso | date:'EEE d MMM' : undefined : 'it-IT' | titlecase }}
+      {{ mondayIso | date:'EEE d MMM':'':'it-IT' | titlecase }}
       —
-      {{ sundayIso | date:'EEE d MMM yyyy' : undefined : 'it-IT' | titlecase }}
+      {{ sundayIso | date:'EEE d MMM yyyy':'':'it-IT' | titlecase }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -38,46 +39,52 @@
     <div class="pad-spine" aria-hidden="true"></div>
 
     <ion-list class="tear-list list-plain">
-<ion-item
-  class="tear-sheet"
-  *ngFor="let d of days; trackBy: trackByDate"
-  [routerLink]="['/liturgia', d.date]"
-  routerDirection="forward"
-  detail
->
-  <span class="perforation" aria-hidden="true"></span>
+      <ion-item
+        class="tear-sheet"
+        *ngFor="let d of days; trackBy: trackByDate"
+        [routerLink]="['/liturgia', d.date]"
+        routerDirection="forward"
+        detail
+      >
+        <span class="perforation" aria-hidden="true"></span>
 
-  <!-- targa data a sinistra -->
-  <div slot="start" class="tear-medal">
-    <div class="num">{{ d.date | date:'d' : undefined : 'it-IT' }}</div>
-    <div class="mon">{{ d.date | date:'MMM' : undefined : 'it-IT' }}</div>
-  </div>
+        <!-- targa data -->
+        <div slot="start" class="tear-medal">
+          <div class="num">{{ d.date | date:'d':'':'it-IT' }}</div>
+          <div class="mon">{{ d.date | date:'MMM':'':'it-IT' }}</div>
+        </div>
 
-  <ion-label>
-    <!-- riga meta più compatta e armonica -->
-    <div class="line-1">
-      <span class="weekday">{{ d.weekday | titlecase }}</span>
-      <span class="dash" aria-hidden="true"></span>
-      <span class="shortdate">{{ d.date | date:'EEE d MMM' : undefined : 'it-IT' | titlecase }}</span>
-    </div>
+        <ion-label>
+          <!-- intestazione -->
+          <div class="line-1">
+            <span class="weekday">{{ d.weekday | titlecase }}</span>
+            <span class="dash" aria-hidden="true"></span>
+            <span class="shortdate">
+              {{ d.date | date:'EEE d MMM':'':'it-IT' | titlecase }}
+            </span>
+          </div>
 
-    <div class="line-2 festa" *ngIf="d.liturgia?.festa; else nofesta">
-      {{ d.liturgia?.festa | uppercase }}
-    </div>
-    <ng-template #nofesta><div class="line-2 muted">—</div></ng-template>
+          <!-- festa -->
+          <div class="line-2 festa" *ngIf="d.liturgia?.festa; else nofesta">
+            {{ d.liturgia?.festa | uppercase }}
+          </div>
+          <ng-template #nofesta><div class="line-2 muted">—</div></ng-template>
 
-    <div class="line-3 reading" *ngIf="primaryReadingLabel(d.liturgia) as pr">
-      <ion-icon name="bookmark-outline" aria-hidden="true"></ion-icon>
-      <span>{{ pr }}</span>
-    </div>
+<!-- snippet del VANGELO -->
+<div class="line-3 reading" *ngIf="getVangeloSnippet(d.liturgia) as vangeloSnippet">
+  <ion-icon name="document-text-outline" aria-hidden="true"></ion-icon>
+  <span>{{ vangeloSnippet }}</span>
+</div>
 
-    <!-- chip colore liturgico A CAPO -->
-    <div class="lit-tag" *ngIf="d.liturgia" [ngClass]="litColorClass(d.liturgia)">
-      {{ d.liturgia?.color_label || d.liturgia?.color_key || '—' }}
-    </div>
-  </ion-label>
-</ion-item>
 
+
+
+          <!-- chip colore liturgico -->
+          <div class="lit-tag" *ngIf="d.liturgia" [ngClass]="litColorClass(d.liturgia)">
+            {{ d.liturgia.color_label || d.liturgia.color_key || '—' }}
+          </div>
+        </ion-label>
+      </ion-item>
     </ion-list>
   </div>
 
@@ -87,11 +94,16 @@
       <ion-item *ngFor="let i of [0,1,2,3,4,5,6]" class="tear-sheet">
         <div slot="start" class="tear-medal skeleton"></div>
         <ion-label>
-          <h2><ion-skeleton-text [animated]="true" style="width: 60%"></ion-skeleton-text></h2>
-          <p><ion-skeleton-text [animated]="true" style="width: 85%"></ion-skeleton-text></p>
-          <p><ion-skeleton-text [animated]="true" style="width: 55%"></ion-skeleton-text></p>
+          <h2>
+            <ion-skeleton-text [animated]="true" style="width: 60%"></ion-skeleton-text>
+          </h2>
+          <p>
+            <ion-skeleton-text [animated]="true" style="width: 85%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text [animated]="true" style="width: 55%"></ion-skeleton-text>
+          </p>
         </ion-label>
-        <span class="wax-seal skeleton" slot="end"></span>
       </ion-item>
     </ion-list>
 

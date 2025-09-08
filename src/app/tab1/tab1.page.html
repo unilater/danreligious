@@ -11,46 +11,41 @@
   <ng-container *ngIf="!loading && !error; else stateTpl">
 
     <!-- ========== LITURGIA DI OGGI ========== -->
-    <ion-card class="card-vintage liturgia-card">
+    <ion-card class="card-vintage liturgia-card" *ngIf="liturgia as lit">
       <ion-card-header>
         <ion-card-title class="section-title">
           <ion-icon name="shield-checkmark-outline" aria-hidden="true"></ion-icon>
           Liturgia di oggi
         </ion-card-title>
 
-        <!-- Chip colore liturgico -->
-        <ng-container *ngIf="liturgia as lit">
-          <ion-chip class="chip-liturgical" [ngClass]="litColorClass(lit)">
-            <ion-label>{{ lit.color_label || lit.color_key || '—' }}</ion-label>
-          </ion-chip>
-        </ng-container>
+        <ion-chip class="chip-liturgical" [ngClass]="litColorClass(lit)">
+          <ion-label>{{ lit.color_label || lit.color_key || '' }}</ion-label>
+        </ion-chip>
       </ion-card-header>
 
-      <!-- KV + ricorrenza senza etichetta “ricorrenza” -->
-      <ion-card-content *ngIf="liturgia as lit">
+      <ion-card-content>
         <div class="kv-table">
           <div class="kv-row">
             <div class="kv-key">TEMPO</div>
             <div class="kv-val">{{ lit.season }}</div>
           </div>
-          <div class="kv-row" *ngIf="lit.week">
+          <div class="kv-row" *ngIf="lit.week && lit.week !== 'NULL'">
             <div class="kv-key">SETTIMANA</div>
             <div class="kv-val">{{ lit.week }}</div>
           </div>
         </div>
 
-        <div class="festa-badge" *ngIf="lit.festa">
+        <div class="festa-badge" *ngIf="lit.festa && lit.festa !== 'NULL'">
           {{ (lit.festa | uppercase) }}
         </div>
 
-        <!-- Letture (prime 3) -->
         <div class="readings">
-          <div class="reading-block" *ngFor="let l of (lit.letture || []) | slice:0:3">
+          <div class="reading-block" *ngFor="let l of lit.letture | slice:0:3">
             <div class="r-head">
               <div class="r-tipo">{{ l.tipo }}</div>
               <div class="r-ref">{{ l.riferimento }}</div>
             </div>
-            <div class="r-body" *ngIf="l.snippet">{{ l.snippet }}</div>
+            <div class="r-body" *ngIf="l.snippet && l.snippet !== 'NULL'">{{ l.snippet }}</div>
           </div>
         </div>
 
@@ -61,8 +56,12 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- ========== SANTI DEL GIORNO (max 2) ========== -->
-    <ion-card class="card-vintage santi-card" *ngIf="(santi?.length || 0) > 0">
+    <div class="divider">
+      <img src="/assets/decor/ornament.svg" alt="" />
+    </div>
+
+    <!-- ========== SANTI DEL GIORNO ========== -->
+    <ion-card class="card-vintage santi-card" *ngIf="santi.length > 0">
       <ion-card-header>
         <ion-card-title class="section-title">
           <ion-icon name="ribbon-outline" aria-hidden="true"></ion-icon>
@@ -74,19 +73,23 @@
         <div class="saints-list">
           <a
             class="saint-card"
-            *ngFor="let s of (santi | slice:0:2); trackBy: trackBySanto"
+            *ngFor="let s of santi; trackBy: trackBySanto"
             [routerLink]="['/santo', today, s.id]"
           >
             <div class="s-title dropcap">{{ s.titolo }}</div>
-            <div class="s-sub" *ngIf="s.sottotitolo">{{ s.sottotitolo }}</div>
-            <div class="s-snippet" *ngIf="s.snippet">{{ s.snippet }}</div>
+            <div class="s-sub" *ngIf="s.sottotitolo && s.sottotitolo !== 'NULL'">{{ s.sottotitolo }}</div>
+            <div class="s-snippet" *ngIf="s.snippet && s.snippet !== 'NULL'">{{ s.snippet }}</div>
           </a>
         </div>
       </ion-card-content>
     </ion-card>
 
-    <!-- ========== NATURA & CAMPI (folio monastico) ========== -->
-    <ion-card class="card-vintage natura-v3" *ngIf="natura as nat">
+    <div class="divider">
+      <img src="/assets/decor/ornament.svg" alt="" />
+    </div>
+
+    <!-- ========== NATURA & CAMPI ========== -->
+    <ion-card class="card-vintage natura-card" *ngIf="natura as nat">
       <ion-card-header>
         <ion-card-title class="section-title">
           <ion-icon name="leaf-outline" aria-hidden="true"></ion-icon>
@@ -98,33 +101,33 @@
         <div class="folio">
           <div class="spine" aria-hidden="true"></div>
           <ul class="folio-list">
-            <li class="folio-item orto" *ngIf="nat.orto">
+            <li class="folio-item orto" *ngIf="nat.orto && nat.orto !== 'NULL'">
               <div class="item-title">ORTO</div>
               <div class="item-text">{{ nat.orto }}</div>
             </li>
-            <li class="folio-item giardino" *ngIf="nat.giardino">
+            <li class="folio-item giardino" *ngIf="nat.giardino && nat.giardino !== 'NULL'">
               <div class="item-title">GIARDINO</div>
               <div class="item-text">{{ nat.giardino }}</div>
             </li>
-            <li class="folio-item piante" *ngIf="nat.piante">
+            <li class="folio-item piante" *ngIf="nat.piante && nat.piante !== 'NULL'">
               <div class="item-title">PIANTE</div>
               <div class="item-text">{{ nat.piante }}</div>
             </li>
-            <li class="folio-item cucina" *ngIf="nat.cucina">
+            <li class="folio-item cucina" *ngIf="nat.cucina && nat.cucina !== 'NULL'">
               <div class="item-title">CUCINA</div>
               <div class="item-text">{{ nat.cucina }}</div>
             </li>
             <li class="folio-item luna" *ngIf="nat.lunaFase || nat.lunaEmoji">
               <div class="item-title">LUNA</div>
               <div class="item-text">
-                <span *ngIf="nat.lunaEmoji">{{ nat.lunaEmoji }} </span>{{ nat.lunaFase || '—' }}
+                <span *ngIf="nat.lunaEmoji">{{ nat.lunaEmoji }} </span>{{ nat.lunaFase || '' }}
               </div>
             </li>
-            <li class="folio-item alba" *ngIf="nat.alba">
+            <li class="folio-item alba" *ngIf="nat.alba && nat.alba !== 'NULL'">
               <div class="item-title">ALBA</div>
               <div class="item-text">{{ nat.alba }}</div>
             </li>
-            <li class="folio-item tramonto" *ngIf="nat.tramonto">
+            <li class="folio-item tramonto" *ngIf="nat.tramonto && nat.tramonto !== 'NULL'">
               <div class="item-title">TRAMONTO</div>
               <div class="item-text">{{ nat.tramonto }}</div>
             </li>
@@ -138,8 +141,12 @@
       </ion-card-content>
     </ion-card>
 
+    <div class="divider">
+      <img src="/assets/decor/ornament.svg" alt="" />
+    </div>
+
     <!-- ========== CONSIGLIO DEL MONACO ========== -->
-    <ion-card class="card-vintage" *ngIf="proverbio?.consiglio">
+    <ion-card class="card-vintage consiglio-card" *ngIf="proverbio?.consiglio && proverbio?.consiglio !== 'NULL'">
       <ion-card-header>
         <ion-card-title class="section-title">
           <ion-icon name="sparkles-outline" aria-hidden="true"></ion-icon>
@@ -147,12 +154,17 @@
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <blockquote class="monk-tip">{{ proverbio?.consiglio }}</blockquote>
+       <blockquote class="monk-tip">{{ proverbio?.consiglio }}</blockquote>
+
       </ion-card-content>
     </ion-card>
 
+    <div class="divider">
+      <img src="/assets/decor/ornament.svg" alt="" />
+    </div>
+
     <!-- ========== CITAZIONE & PROVERBIO ========== -->
-    <ion-card class="card-vintage" *ngIf="proverbio as pro">
+    <ion-card class="card-vintage citazione-card" *ngIf="proverbio as pro">
       <ion-card-header>
         <ion-card-title class="section-title">
           <ion-icon name="chatbubble-ellipses-outline" aria-hidden="true"></ion-icon>
@@ -160,12 +172,12 @@
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <figure class="quote-wrap" *ngIf="pro.citazione">
+        <figure class="quote-wrap" *ngIf="pro.citazione && pro.citazione !== 'NULL'">
           <blockquote class="quote">«{{ pro.citazione }}»</blockquote>
           <figcaption class="quote-cap">—</figcaption>
         </figure>
 
-        <div class="proverbio" *ngIf="pro.testo">
+        <div class="proverbio" *ngIf="pro.testo && pro.testo !== 'NULL'">
           <em>«{{ pro.testo }}»</em>
         </div>
       </ion-card-content>
@@ -175,7 +187,7 @@
 
   <!-- Stati: loading / errore -->
   <ng-template #stateTpl>
-    <div class="state center">
+    <div class="state center" aria-live="polite">
       <ion-spinner *ngIf="loading" name="crescent" class="center-spinner"></ion-spinner>
       <ion-note color="danger" *ngIf="error" class="center-note">{{ error }}</ion-note>
     </div>

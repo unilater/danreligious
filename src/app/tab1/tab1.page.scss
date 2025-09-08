@@ -1,318 +1,286 @@
-/* ============================================================
-   TAB1 — Stile monastico/letterpress (coerente con global.scss)
-   Usa variabili globali: --font-display, --font-body, palette *
-   ============================================================ */
+/* ================================
+   Stile Almanacco del Monaco
+   ================================ */
 
-/* ---------- Intestazione & pergamena ---------- */
-.parchment-header{
-  --background: linear-gradient(180deg, var(--parchment), #f3ead4);
-  border-bottom: 1px solid var(--parchment-line);
-}
-.parchment-header .vintage-title{
-  display: inline-flex;
-  gap: .5rem;
-  align-items: center;
-  font-family: var(--font-display);
-  letter-spacing: .02em;
-}
-
-.parchment-body{
-  --background:
-    radial-gradient(80% 120% at 50% 0%, #fff8ea 0%, var(--parchment) 70%),
-    repeating-linear-gradient(0deg, rgba(0,0,0,.02), rgba(0,0,0,.02) 1px, transparent 1px, transparent 4px);
-}
-
-/* ---------- Card pergamena (solo micro-tocchi locali) ---------- */
-ion-card.card-vintage,
-ion-card{
-  background: linear-gradient(180deg, #fffdf8, var(--parchment));
-  border: 1px solid var(--parchment-line);
-  border-radius: 14px;
-  box-shadow: 0 2px 0 rgba(0,0,0,.06), 0 10px 20px rgba(0,0,0,.04);
-  overflow: hidden;
-  margin: 12px;
-}
-
-/* ---------- Titoli sezione ---------- */
-.section-title{
-  font-family: var(--font-display);
-  font-size: 1.20rem;
-  display: inline-flex;
-  align-items: center;
-  gap: .6rem;
-  position: relative;
-}
-.section-title::after{
-  content: "";
-  height: 1px;
-  opacity: .85;
-  background: linear-gradient(90deg, var(--parchment-line), transparent);
-  flex: 1 1 auto;
-  margin-left: .6rem;
-}
-
-/* ============================================================
-   1) L I T U R G I A   D I   O G G I
-   ============================================================ */
-
-.liturgia-card ion-card-header{ padding-bottom: 6px; }
-
-/* Chip colore: più aria rispetto al titolo */
-.liturgia-card .chip-liturgical{
-  margin-top: 12px;
-  height: 30px;
-  --background: #efe6d0;
-  --color: var(--vintage-ink);
-  border: 1px solid var(--parchment-line);
-  box-shadow: 0 1px 0 rgba(0,0,0,.06);
-}
-
-/* Varianti coerenti con litColorClass() */
-.chip-liturgical.lit-verde  { --background:#e2f2e4; --color:#154f1b; border-color:#bfe5c3; }
-.chip-liturgical.lit-bianco { --background:#ffffff; --color:#2e2a23; border-color:#e7e0c8; }
-.chip-liturgical.lit-rosso  { --background:#fde6e6; --color:#7b1010; border-color:#f3caca; }
-.chip-liturgical.lit-viola  { --background:#efe6fa; --color:#45286f; border-color:#dccbf6; }
-.chip-liturgical.lit-rosa   { --background:#ffe9f0; --color:#8f2856; border-color:#ffcfe0; }
-.chip-liturgical.lit-neutro { --background:#efe9d6; --color:var(--vintage-ink); }
-
-/* KV (Tempo/Settimana) con forte definizione */
-.kv-table{ margin-top: 12px; }
-.kv-table .kv-row{
-  display: grid;
-  grid-template-columns: 150px 1fr;
-  gap: .9rem;
-  padding: 8px 0;
-  align-items: baseline;
-  border-bottom: 1px dashed var(--parchment-line);
-}
-.kv-table .kv-row:last-child{ border-bottom: 0; }
-
-.kv-table .kv-key{
-  font-family: var(--font-display);
-  font-variant-caps: small-caps;
-  letter-spacing: .08em;
-  font-weight: 700;
-  color: rgba(46,43,41,.78); /* var(--vintage-ink) attenuato */
-}
-.kv-table .kv-val{
-  font-weight: 800;
-}
-
-/* Ricorrenza in cartiglio (senza etichetta) */
-.festa-badge{
-  margin: 16px 0 8px;
-  display: inline-block;
-  padding: 10px 16px;
-  border-radius: 999px;
-  background: #f3ebde;
-  border: 2px solid #e0d0b3;
-  font-family: var(--font-display);
-  font-weight: 800;
-  letter-spacing: .02em;
-}
-
-/* Letture: riquadri ariosi, testo a capo, niente icone laterali */
-.readings{ margin-top: 10px; }
-.reading-block{
-  padding: 16px 16px;
-  margin: 12px 0;
-  border-radius: 12px;
-  border: 1px solid var(--parchment-line);
-  background: linear-gradient(180deg, #fffcf6, #f8efdf);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
-}
-.r-head{
-  display: flex;
-  flex-wrap: wrap;
-  gap: .75rem 1rem;
-  align-items: baseline;
-}
-.r-tipo{
-  font-family: var(--font-display);
-  font-variant-caps: small-caps;
-  letter-spacing: .08em;
-  font-weight: 800;
-}
-.r-ref{
-  font-style: italic;
-  opacity: .9;
-  font-weight: 600;
-}
-.r-body{
-  margin-top: 8px;
+/* --- Sfondo generale --- */
+ion-content.parchment-body {
+  --background: #fcf8f2;
+  font-family: 'EB Garamond', serif;
+  font-size: 1rem;
   line-height: 1.6;
-  word-break: break-word;
-}
-/* se nel DOM restano icone/chevron a destra, nascondiamoli */
-.reading-block ion-icon[slot="end"]{ display: none !important; }
-
-/* Pulsante outline coerente */
-.btn-primary{
-  margin-top: 10px;
-  --background: transparent;
-  border: 1.5px solid #c8b690;
-  border-radius: 12px;
-  padding-inline: 12px;
-  font-weight: 700;
+  color: #3b2d1f;
+  padding: 0.5rem;
 }
 
-/* ============================================================
-   2) S A N T I   D E L   G I O R N O
-   ============================================================ */
+/* --- Header --- */
+.parchment-header {
+  --background: #f5e6c5;
+  border-bottom: 3px solid #7b2d26;
 
-.saints-list{ display: grid; gap: 12px; }
+  ion-title.vintage-title {
+    font-family: 'Lora', serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #7b2d26;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: 1px;
+  }
+}
 
-.saint-card{
+/* --- Card stile vintage --- */
+.card-vintage {
+  border-radius: 0;
+  margin: 1rem 0;
+  box-shadow: none;
+  padding: 0.2rem;
+}
+
+/* --- Titoli di sezione --- */
+.section-title {
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1.05rem;
+  border-bottom: 2px solid currentColor;
+  padding-bottom: 0.2rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ================================
+   Colori pastello per sezione
+   ================================ */
+
+/* Liturgia */
+.liturgia-card {
+  border: 2px solid #7b2d26;
+  background: #fff9f8;
+}
+.liturgia-card .section-title {
+  color: #7b2d26;
+}
+
+/* Santi del giorno */
+.santi-card {
+  border: 2px solid #c2a878;
+  background: #fffdf2;
+}
+.santi-card .section-title {
+  color: #a06b00;
+}
+.s-title.dropcap::first-letter {
+  color: #a06b00;
+}
+
+/* Natura & Campi */
+.natura-v3 {
+  border: 2px solid #7a9a72;
+  background: #f5faf3;
+}
+.natura-v3 .section-title {
+  color: #3a6b3a;
+}
+.folio-item .item-title {
+  color: #3a6b3a;
+}
+
+/* Consiglio del Monaco */
+.card-vintage:nth-of-type(4) {
+  border: 2px solid #6d91a5;
+  background: #f3f8fb;
+}
+.card-vintage:nth-of-type(4) .section-title {
+  color: #3b647a;
+}
+.monk-tip {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  border-left: 6px solid #3b647a;   /* più spesso */
+  border-right: 6px solid #3b647a;  /* più spesso */
+  padding: 1rem 1.2rem;             /* più spazio interno */
+  margin: 0.8rem 0;
   display: block;
+  color: #3b647a;
+  background: #f3f8fb;
+  line-height: 1.6;
+}
+
+
+/* Citazione & Proverbio */
+.card-vintage:last-of-type {
+  border: 2px solid #b47b7b;
+  background: #fdf7f7;
+}
+.card-vintage:last-of-type .section-title {
+  color: #7b2d26;
+}
+.quote-wrap {
+  border: 1px solid #b47b7b;
+  background: #fffdf8;
+}
+.proverbio {
+  color: #7b2d26;
+}
+
+/* --- Chip liturgici --- */
+.chip-liturgical {
+  border-radius: 0;
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  font-size: 0.95rem;
+  padding: 0.3rem 1rem;
+  border: 2px solid transparent;
+  margin-top: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.lit-verde  { background-color: #3a923a; border-color: #2f6e2f; color: #fff; }
+.lit-rosso  { background-color: #b02020; border-color: #7d1717; color: #fff; }
+.lit-bianco { background-color: #f1f1f1; border-color: #bbb; color: #000; }
+.lit-viola  { background-color: #5a2d82; border-color: #401f61; color: #fff; }
+.lit-rosa   { background-color: #d66ca0; border-color: #9e3f6e; color: #fff; }
+.lit-nero   { background-color: #111;    border-color: #000;   color: #fff; }
+.lit-oro    { background-color: #c59d3d; border-color: #9e7a2c; color: #fff; }
+
+/* --- Festa in evidenza --- */
+.festa-badge {
+  background: #7b2d26;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0.5rem;
+  margin: 1rem 0;
+  border: 2px solid #5a1a1a;
+}
+
+/* --- Letture --- */
+.readings { margin-top: 0.6rem; }
+.reading-block {
+  border-left: 4px solid #c2a878;
+  background: #fdf8ef;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 0.8rem;
+}
+.r-head {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+.r-tipo { color: #7b2d26; text-transform: uppercase; }
+.r-ref  { color: #333; }
+.r-body { font-style: italic; color: #555; }
+
+/* --- Pulsanti --- */
+.btn-primary {
+  font-family: 'EB Garamond', serif;
+  font-weight: bold;
+  border-radius: 0;
+  margin-top: 0.5rem;
+  --border-color: #7b2d26;
+  --color: #7b2d26;
+}
+
+/* --- Santi del giorno --- */
+/* --- Santi del giorno --- */
+.saints-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+}
+
+.saint-card {
+  display: block;
+  padding: 1rem;
+  border: 1px solid #c2a878;
+  background: #fffdf8;
   text-decoration: none;
   color: inherit;
-  border: 1px solid var(--parchment-line);
-  border-radius: 14px;
-  padding: 14px 14px 12px;
-  background: linear-gradient(180deg, #fffdf8, #f9f4e9);
-  transition: transform .06s ease, box-shadow .12s ease;
-}
-.saint-card:active{
-  transform: translateY(1px);
-  box-shadow: inset 0 2px 6px rgba(0,0,0,.06);
 }
 
-.s-title{
-  font-family: var(--font-display);
-  font-size: 1.18rem;
-  line-height: 1.25;
-  margin: 0 0 4px;
-}
-/* Drop cap sul titolo (stile incunabolo) */
-.s-title.dropcap::first-letter{
-  color: #8f1d1d;
-  font-size: 1.9em;
-  line-height: .85;
-  margin-right: .06em;
-}
-.s-sub{ opacity: .75; margin-bottom: 4px; }
-.s-snippet{ line-height: 1.55; }
-
-/* ============================================================
-   3) N A T U R A   &   C A M P I   (folio)
-   ============================================================ */
-
-.natura-v3 ion-card-header{ padding-bottom: 6px; }
-
-.natura-v3 .folio{
-  position: relative;
-  padding: 14px 14px 12px 24px;
-  border: 1px solid var(--parchment-line);
-  border-radius: 16px;
-  background: linear-gradient(180deg, #fffdf8, #f9f3e6);
-  box-shadow: inset 0 1px 0 rgba(0,0,0,.03);
-}
-.natura-v3 .spine{
-  position: absolute;
-  left: 10px; top: 10px; bottom: 10px;
-  width: 4px; border-radius: 6px;
-  background: linear-gradient(180deg, #d9c8a8, #cdb893);
-}
-.natura-v3 .folio-list{
-  list-style: none;
-  margin: 0;
-  padding: 0 0 0 6px;
-}
-.natura-v3 .folio-item{
-  padding: 14px 2px;
-  border-bottom: 1px dashed var(--parchment-line);
-}
-.natura-v3 .folio-item:last-child{ border-bottom: 0; }
-
-/* Titolo categoria: alto contrasto, sempre leggibile */
-.natura-v3 .item-title{
-  display: inline-block;
-  padding: 4px 12px 3px;
-  border-radius: 999px;
-  font-family: var(--font-display);
-  font-variant-caps: small-caps;
-  letter-spacing: .10em;
-  font-weight: 800;
-  background: #2b2b2b; /* fallback scuro */
-  color: #fff;
-  border: 2px solid #cbb89a;
-  text-shadow: 0 1px 0 rgba(0,0,0,.25);
-}
-
-/* Testo categoria */
-.natura-v3 .item-text{
-  margin-top: 8px;
-  line-height: 1.6;
-  font-size: 1.02rem;
+/* Titolo santo */
+.s-title {
+  font-family: 'Lora', serif;
+  font-size: 1.2rem;           /* più grande */
   font-weight: 600;
-  color: var(--vintage-ink);
-  opacity: .95;
+  color: #7b2d26;              /* rosso liturgico */
+  margin-bottom: 0.3rem;
+  line-height: 1.4;
 }
 
-/* Varianti cromatiche per categoria (senza variabili monk-*) */
-.natura-v3 .orto     .item-title{ background:#2f5a3a; color:#fff; }
-.natura-v3 .giardino .item-title{ background:#2f6548; color:#fff; }
-.natura-v3 .piante   .item-title{ background:#6c4a2f; color:#fff; }
-.natura-v3 .cucina   .item-title{ background:#b4882a; color:#231a11; }
-.natura-v3 .luna     .item-title{ background:#2b4a6f; color:#fff; }
-.natura-v3 .alba     .item-title{ background:#b76e00; color:#fff; }
-.natura-v3 .tramonto .item-title{ background:#a34b2b; color:#fff; }
-
-/* ============================================================
-   4) C O N S I G L I O   /   C I T A Z I O N I
-   ============================================================ */
-
-.monk-tip{
-  margin: 0;
-  line-height: 1.6;
-  font-weight: 600;
-  font-size: 1.02rem;
-  position: relative;
-  padding-left: 12px;
-}
-.monk-tip::before{
-  content: "";
-  position: absolute;
-  left: 0; top: .15em; bottom: .15em;
-  width: 3px; border-radius: 6px;
-  background: var(--accent-1);
-  opacity: .4;
+/* Dropcap iniziale */
+.s-title.dropcap::first-letter {
+  font-size: 2.6rem;           /* effetto capitello */
+  font-weight: 700;
+  color: #a06b00;              /* oro/ocra */
+  margin-right: 0.3rem;
+  float: left;
+  line-height: 1;
+  font-family: 'EB Garamond', serif;
 }
 
-.quote-wrap{ margin: 0 0 8px; }
-.quote{
-  margin: 0;
+/* Sottotitolo (tipo "Festa") */
+.s-sub {
   font-style: italic;
+  color: #a06b00;              /* ocra elegante */
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+/* Snippet descrittivo */
+.s-snippet {
+  font-size: 0.95rem;
   line-height: 1.6;
-}
-.quote-cap{
-  opacity: .6;
-  font-size: .9rem;
+  color: #444;
 }
 
-/* ============================================================
-   Stati di caricamento / errore
-   ============================================================ */
-.state{
-  display: grid;
-  place-items: center;
-  padding: 24px;
+/* --- Natura & Campi (folio monastico) --- */
+.folio {
+  border: 2px solid #c2a878;
+  background: #fefcf6;
+  padding: 0.8rem;
+  position: relative;
+}
+.folio .spine {
+  position: absolute;
+  left: -6px;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #7b2d26,
+    #7b2d26 2px,
+    transparent 2px,
+    transparent 6px
+  );
+}
+.folio-list { list-style: none; margin: 0; padding: 0 0 0 0.8rem; }
+.folio-item { margin-bottom: 0.6rem; }
+.folio-item .item-title {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* --- Divider ornamentale --- */
+.divider {
   text-align: center;
+  margin: 1rem 0;
 }
-ion-note[color="danger"]{
-  background:#fff2f1;
-  border:1px solid #f3b7b2;
-  color:#731b1b;
-  padding: 6px 10px;
-  border-radius: 8px;
-  margin-top: 10px;
+.divider img {
+  width: 120px;
+  opacity: 0.6;
 }
 
-/* ============================================================
-   Responsive minori
-   ============================================================ */
-@media (max-width: 380px){
-  .kv-table .kv-row{ grid-template-columns: 120px 1fr; }
-  .s-title{ font-size: 1.08rem; }
-  .natura-v3 .item-text{ font-size: 1rem; }
-}
+/* --- Stati di caricamento/errore --- */
+.state.center { text-align: center; margin-top: 2rem; }
+.center-spinner { width: 40px; height: 40px; }
+.center-note { font-weight: bold; }
+

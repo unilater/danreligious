@@ -83,27 +83,86 @@ ion-item ion-icon[name="restaurant-outline"]  { color: var(--monk-wine); }   /* 
 ion-item ion-icon[name="sparkles-outline"]    { color: #7a6a3e; }            /* Consiglio */
 ion-item ion-icon[name="moon-outline"]        { color: var(--monk-moon); }   /* Fase lunare */
 
-/* testo lungo – leggibilità migliorata */
-.prose {
-  /* leggero aumento, responsivo ma contenuto */
-  font-size: clamp(1.02rem, 0.98rem + 0.25vw, 1.14rem);
-  line-height: 1.72;
-  color: var(--vintage-ink);
-  max-width: 70ch;
-  margin: 0 auto;               /* centrato nella card */
-  letter-spacing: .005em;
-}
-.prose p { margin: .75rem 0; }
-.prose h2, .prose h3 {
-  font-family: "IM Fell English SC", "Cardo", serif;
-  letter-spacing: .02em;
-  margin: 1.1rem 0 .4rem;
-}
-.prose em { color: var(--muted-ink); }
-.prose strong { color: var(--vintage-ink); }
+
 
 /* stato */
 .state { display: grid; place-items: center; padding: 28px; text-align: center; }
 ion-note[color="danger"] {
   background: #fff2ef; border: 1px solid #efc4bb; padding: 6px 10px; border-radius: 8px;
+}
+
+
+.prose {
+  font-size: clamp(1.12rem, 1rem + 0.5vw, 1.28rem); /* leggermente più grande */
+  line-height: 1.8;                                  /* più respiro */
+  color: var(--vintage-ink);
+  max-width: 68ch;
+  margin: 0 auto;
+  letter-spacing: .01em;
+}
+
+.prose p {
+  margin: 1rem 0; /* più spazio tra paragrafi */
+}
+
+/* titoli interni evidenziati */
+.prose h2 {
+  font-family: "IM Fell English SC", "Cardo", serif;
+  font-size: 1.35em;
+  color: var(--monk-ocher);     /* accento caldo */
+  border-left: 4px solid var(--monk-ocher);
+  padding-left: .6rem;
+  margin: 1.5rem 0 .75rem;
+}
+
+.prose h3 {
+  font-family: "IM Fell English SC", "Cardo", serif;
+  font-size: 1.2em;
+  color: var(--monk-sage);      /* verde salvia per sottosezioni */
+  margin: 1.2rem 0 .5rem;
+}
+
+/* piccolo rinforzo per testo importante */
+.prose strong {
+  font-weight: 700;
+  color: var(--monk-wine);
+}
+
+::ng-deep .prose {
+  font-size: 1.35rem;                /* ancora più grande */
+  line-height: 1.9;                  /* molto arioso */
+  color: #1a1a1a;                    /* quasi nero per contrasto massimo */
+  max-width: 72ch;                   /* leggibilità ottimale */
+  margin: 0 auto;
+  letter-spacing: .012em;
+}
+
+::ng-deep .prose p {
+  margin: 1.1rem 0;                  /* più spazio tra paragrafi */
+  font-size: 1.25rem;
+}
+
+/* Titoli principali */
+::ng-deep .prose h2 {
+  font-family: "IM Fell English SC", "Cardo", serif;
+  font-size: 1.6rem;
+  color: var(--monk-ocher);
+  border-left: 5px solid var(--monk-ocher);
+  background: #f3ecdb;               /* sfondo chiaro pergamena */
+  padding: .5rem .75rem;
+  margin: 1.8rem 0 1.2rem;
+}
+
+/* Sottosezioni */
+::ng-deep .prose h3 {
+  font-family: "IM Fell English SC", "Cardo", serif;
+  font-size: 1.35rem;
+  color: var(--monk-sage);
+  margin: 1.4rem 0 .7rem;
+}
+
+/* Evidenziazione */
+::ng-deep .prose strong {
+  font-weight: 700;
+  color: var(--monk-wine);
 }
